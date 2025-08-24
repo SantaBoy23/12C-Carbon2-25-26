@@ -45,7 +45,11 @@
 
 // More includes here...
 #include "autons.hpp"
-#include "subsystems.hpp"
+#include "drivetrain.hpp"
+#include "intake.hpp"
+#include "nothing.hpp"
+#include "antennas.hpp"
+#include "centerDescore.hpp"
 
 
 /**
