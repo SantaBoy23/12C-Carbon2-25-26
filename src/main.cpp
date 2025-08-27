@@ -1,8 +1,8 @@
 #include "main.h"
 
 ez::Drive chassis(
-    {1, 2, 3},    // Left Chassis Ports (negative port will reverse it!)
-    {-4, -5, -6}, // Right Chassis Ports (negative port will reverse it!)
+    {-14, -15, -16},    // Left Chassis Ports (negative port will reverse it!)
+    {11, 12, 13}, // Right Chassis Ports (negative port will reverse it!)
     7, 3.25, 450  // IMU Port, Wheel Diameter (in), Wheel RPM
 );
 
@@ -160,8 +160,7 @@ void opcontrol() {
   while (true) {
     ez_template_extras(); // Built in EZ-Template extras
     chassis.opcontrol_tank();  // Activate tank control
-
-    // ALL FUNCTIONS HERE
+    IntakeControl();
 
     pros::delay(ez::util::DELAY_TIME);  // Slight delay at end of each loop
   }
