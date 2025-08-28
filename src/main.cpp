@@ -1,8 +1,8 @@
 #include "main.h"
 
 ez::Drive chassis(
-    {-14, -15, -16},    // Left Chassis Ports (negative port will reverse it!)
-    {11, 12, 13}, // Right Chassis Ports (negative port will reverse it!)
+    {-14, -15, -16},    // Left Chassis Ports
+    {11, 12, 13}, // Right Chassis Ports
     7, 3.25, 450  // IMU Port, Wheel Diameter (in), Wheel RPM
 );
 
