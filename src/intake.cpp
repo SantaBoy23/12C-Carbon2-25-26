@@ -19,7 +19,7 @@ void IntakeControl() {
         TopIntakeMove(-127);
     } 
 
-    // If L2 is pressed, spin intake forwards
+    // If R1 is pressed, spin intake forwards
     else if (master.get_digital(DIGITAL_R1)) {
         BottomIntakeMove(127);
         TopIntakeMove(127);
@@ -27,8 +27,8 @@ void IntakeControl() {
 
     // If R2 is pressed, spin intake backwards
     else if (master.get_digital(DIGITAL_R2)) {
-        BottomIntakeMove(127);
-        TopIntakeMove(127);
+        BottomIntakeMove(-127);
+        TopIntakeMove(-127);
     }
 
     // If no button is pressed, stop intake from spinning
@@ -36,4 +36,9 @@ void IntakeControl() {
         BottomIntakeMove(0);
         TopIntakeMove(0);
     }
+}
+
+void IntakeLiftControl() {
+    //If Down Arrow is pressed, toggle intake drop state
+    intakeLift.button_toggle(master.get_digital(DIGITAL_B));
 }

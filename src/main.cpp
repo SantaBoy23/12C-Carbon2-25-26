@@ -161,6 +161,9 @@ void opcontrol() {
     ez_template_extras(); // Built in EZ-Template extras
     chassis.opcontrol_tank();  // Activate tank control
     IntakeControl();
+    CenterDescoreControl();
+    IntakeLiftControl();
+    MatchLoadControl();
 
     pros::delay(ez::util::DELAY_TIME);  // Slight delay at end of each loop
   }
