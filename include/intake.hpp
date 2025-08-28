@@ -8,7 +8,9 @@ inline pros::Motor intakeTop(-10);
 
 inline ez::Piston intakeLift('A');
 
-inline bool IntakeControlActive = true;
+inline bool IntakeLiftDropBool = false;
+
+void IntakeLiftDrop(bool IntakeLiftState);
 
 void BottomIntakeMove();
 void TopIntakeMove();

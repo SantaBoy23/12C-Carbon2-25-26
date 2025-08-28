@@ -1,5 +1,5 @@
 #include "main.h"
-/*
+
 //Create a set of color modes
 enum ColorMode {
   BlueMode,
@@ -47,19 +47,13 @@ void ColorSort() {
 
         //Run this loop if the color sensor detects a hue <17 and the promixity is ≤300
         if ((IntakeColorHue) < 25 && (IntakeColorProximity <= 300)) {
-
-          pros::delay(80);
-
-          //Reverse intake
-          IntakeMove(-127);
-
-          //Delay for 75ms
-          pros::delay(65); //used to be 55
-
-          //Restart driver intake control
-          IntakeMove(127);
-        } 
-      }
+            
+            //Since IntakeLift is already up, move IntakeLift down to prevent scoring.
+            IntakeLiftDrop(true);
+            pros::delay(200); //tweak to correct
+            IntakeLiftDrop(false);
+        }
+    }
 
       //Run this loop if the current mode is red
       else if (current_mode == RedMode) {
@@ -67,18 +61,11 @@ void ColorSort() {
         //Run this loop if the color sensor detects a hue >190 and <350 and the promixity is ≤255
         if (((IntakeColorHue > 190) && (IntakeColorHue) < 350) && (IntakeColorProximity <= 255)) {
 
-          pros::delay(40);
-
-          //Reverse intake
-          IntakeMove(-127);
-
-          //Delay for 75ms
-          pros::delay(100); //used to be 55
-
-          //Restart driver intake control
-          IntakeMove(127);
-        } 
-      }
+            //Since IntakeLift is already up, move IntakeLift down to prevent scoring.
+            IntakeLiftDrop(true);
+            pros::delay(200); //tweak to correct
+            IntakeLiftDrop(false);
+        }
     }
 
     //Run this loop if it is driver control
@@ -90,19 +77,10 @@ void ColorSort() {
         //Run this loop if the color sensor detects a hue <17 and the promixity is ≤300
         if ((IntakeColorHue) < 25 && (IntakeColorProximity <= 300)) {
 
-          pros::delay(80);
-
-          //Stop driver intake control
-          IntakeControlActive = false;
-
-          //Reverse intake
-          IntakeMove(-127);
-
-          //Delay for 75ms
-          pros::delay(65);
-
-          //Restart driver intake control
-          IntakeControlActive = true;
+            //Since IntakeLift is already up, move IntakeLift down to prevent scoring.
+            IntakeLiftDrop(true);
+            pros::delay(200); //tweak to correct
+            IntakeLiftDrop(false);
         }
       }
 
@@ -112,19 +90,10 @@ void ColorSort() {
         //Run this loop if the color sensor detects a hue >190 and <350 and the promixity is ≤255
         if (((IntakeColorHue > 190) && (IntakeColorHue) < 350) && (IntakeColorProximity <= 255)) {
 
-          pros::delay(40);
-
-          //Reverse intake
-          IntakeControlActive = false;
-
-          //Reverse intake
-          IntakeControl(-127);
-
-          //Delay for 75ms
-          pros::delay(100); //used to be 65
-
-          //Restart driver intake control
-          IntakeControlActive = true;
+            //Since IntakeLift is already up, move IntakeLift down to prevent scoring.
+            IntakeLiftDrop(true);
+            pros::delay(200); //tweak to correct
+            IntakeLiftDrop(false);
         } 
       }
     }
@@ -134,14 +103,17 @@ void ColorSort() {
   }
 }
 
+
+//NEED TO FIX
+/*
 //Parallel function to set the color sensor light level
 void ColorSensorLight(int LightLevel) {
   intakeColor.set_led_pwm(LightLevel);
 }
+*/
 
 void ColorSortKill () {
   if (master.get_digital(DIGITAL_UP) && master.get_digital(DIGITAL_LEFT)) {
     ColorSortDriver = false;
   }
 }
-*/

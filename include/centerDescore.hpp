@@ -5,4 +5,6 @@
 
 inline ez::Piston centerDescore('C');
 
+void CenterDescoreRaise(bool CenterDescoreState);
+
 void CenterDescoreControl();

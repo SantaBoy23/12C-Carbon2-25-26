@@ -38,7 +38,12 @@ void IntakeControl() {
     }
 }
 
+//Parallel function to change Intake Lift status
+void IntakeLiftDrop(bool IntakeLiftState) {
+    intakeLift.set(IntakeLiftState);
+}
+
 void IntakeLiftControl() {
-    //If Down Arrow is pressed, toggle intake drop state
+    //If "B" button is pressed, toggle intake drop state
     intakeLift.button_toggle(master.get_digital(DIGITAL_B));
 }
