@@ -33,6 +33,11 @@ void ColorSort() {
   //Always have this function running in the background
   while (true) {
 
+    //If B is pressed, the tracker for intakelift is changed
+    if (master.get_digital(DIGITAL_B)){
+        intakeLiftTracker += 1;
+    }
+
     //Variable to store intake color sensor hue reading
     double IntakeColorHue = intakeColor.get_hue();
 
@@ -47,11 +52,26 @@ void ColorSort() {
 
         //Run this loop if the color sensor detects a hue <17 and the promixity is ≤300
         if ((IntakeColorHue) < 25 && (IntakeColorProximity <= 300)) {
-            
+            /*
             //Since IntakeLift is already up, move IntakeLift down to prevent scoring.
             IntakeLiftDrop(true);
             pros::delay(200); //tweak to correct
             IntakeLiftDrop(false);
+            */
+
+            //If IntakeLift is already up, move IntakeLift down to prevent scoring.
+            //If IntakeLift is already down, move Intake Lift up to prevent scoring.
+            if ((intakeLiftTracker % 2 == 0 )){
+                IntakeLiftDrop(true);
+                pros::delay(200); //tweak to correct
+                IntakeLiftDrop(false);
+            }
+
+            else {
+                IntakeLiftDrop(false);
+                pros::delay(200); //tweak to correct
+                IntakeLiftDrop(true);
+            }
         }
     }
 
@@ -101,16 +121,16 @@ void ColorSort() {
     //Delay to prevent overloading the CPU
     pros::delay(ez::util::DELAY_TIME);
   }
+ }
 }
 
-
 //NEED TO FIX
-/*
+
 //Parallel function to set the color sensor light level
 void ColorSensorLight(int LightLevel) {
   intakeColor.set_led_pwm(LightLevel);
 }
-*/
+
 
 void ColorSortKill () {
   if (master.get_digital(DIGITAL_UP) && master.get_digital(DIGITAL_LEFT)) {

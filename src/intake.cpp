@@ -41,6 +41,9 @@ void IntakeControl() {
 //Parallel function to change Intake Lift status
 void IntakeLiftDrop(bool IntakeLiftState) {
     intakeLift.set(IntakeLiftState);
+    if (master.get_digital(DIGITAL_B)){
+        intakeLiftTracker += 1;
+    }
 }
 
 void IntakeLiftControl() {

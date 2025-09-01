@@ -165,7 +165,7 @@ void opcontrol() {
     CenterDescoreControl();
     IntakeLiftControl();
     MatchLoadControl();
-
+    RightAntennaControl();
     ColorSortKill();
 
     pros::delay(ez::util::DELAY_TIME);  // Slight delay at end of each loop
