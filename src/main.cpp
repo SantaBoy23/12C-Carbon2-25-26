@@ -55,7 +55,7 @@ void initialize() {
   // Initialize chassis and auton selector
   chassis.initialize();
   ez::as::initialize();
-  ColorSensorLight(100);
+  //ColorSensorLight(100);
   master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
 }
 
@@ -166,7 +166,7 @@ void opcontrol() {
     IntakeLiftControl();
     MatchLoadControl();
     RightAntennaControl();
-    ColorSortKill();
+    //ColorSortKill();
 
     pros::delay(ez::util::DELAY_TIME);  // Slight delay at end of each loop
   }

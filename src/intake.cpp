@@ -42,7 +42,7 @@ void IntakeControl() {
 void IntakeLiftDrop(bool IntakeLiftState) {
     intakeLift.set(IntakeLiftState);
     if (master.get_digital(DIGITAL_B)){
-        intakeLiftTracker += 1;
+        //intakeLiftTracker += 1;
     }
 }
 

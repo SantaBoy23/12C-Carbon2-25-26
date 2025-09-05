@@ -8,7 +8,7 @@ inline pros::Motor intakeTop(-10);
 
 inline ez::Piston intakeLift('A');
 
-int intakeLiftTracker = 0;
+//int intakeLiftTracker = 0;
 
 void IntakeLiftDrop(bool IntakeLiftState);
 

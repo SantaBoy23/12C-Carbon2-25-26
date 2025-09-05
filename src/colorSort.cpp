@@ -1,5 +1,6 @@
 #include "main.h"
 
+/*
 //Create a set of color modes
 enum ColorMode {
   BlueMode,
@@ -58,6 +59,8 @@ void ColorSort() {
             pros::delay(200); //tweak to correct
             IntakeLiftDrop(false);
             */
+           /*
+           
 
             //If IntakeLift is already up, move IntakeLift down to prevent scoring.
             //If IntakeLift is already down, move Intake Lift up to prevent scoring.
@@ -137,3 +140,4 @@ void ColorSortKill () {
     ColorSortDriver = false;
   }
 }
+*/
