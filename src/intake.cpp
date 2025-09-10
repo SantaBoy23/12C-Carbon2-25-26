@@ -50,3 +50,9 @@ void IntakeLiftControl() {
     //If "B" button is pressed, toggle intake drop state
     intakeLift.button_toggle(master.get_digital(DIGITAL_B));
 }
+
+void IntakeParkControl() {
+    //If "Left" button is pressed, toggle park drop state
+    parkLeft.button_toggle(master.get_digital(DIGITAL_LEFT));
+    parkRight.button_toggle(master.get_digital(DIGITAL_LEFT));
+}
