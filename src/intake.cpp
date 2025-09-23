@@ -55,4 +55,5 @@ void IntakeParkControl() {
     //If "Left" button is pressed, toggle park drop state
     parkLeft.button_toggle(master.get_digital(DIGITAL_LEFT));
     parkRight.button_toggle(master.get_digital(DIGITAL_LEFT));
+    BottomIntakeMove(0);
 }
