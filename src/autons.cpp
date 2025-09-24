@@ -6,11 +6,11 @@ const int SWING_SPEED = 110;
 
 void default_constants() {
   // P, I, D, and Start I
-  chassis.pid_drive_constants_forward_set(20.5, 0.03, 141);         // Forward constants, used for odom and non odom motions
-  chassis.pid_drive_constants_backward_set(20.5, 0.03, 141.0);         // Reverse constants, used for odom and non odom motions
+  chassis.pid_drive_constants_forward_set(9.5, 0, 6.5);         // Forward constants, used for odom and non odom motions
+  chassis.pid_drive_constants_backward_set(9.5, 0, 6.5);         // Reverse constants, used for odom and non odom motions
   chassis.pid_heading_constants_set(11.0, 0.0, 20.0);        // Holds the robot straight while going forward without odom
-  chassis.pid_turn_constants_set(3.0, 0.05, 20.0, 15.0);     // Turn in place constants
-  chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
+  chassis.pid_turn_constants_set(1.7, 0.0, 2.5);     // Turn in place constants
+  chassis.pid_swing_constants_set(3.0, 0.0, 1.6);           // Swing constants //Needs a tad more D
   chassis.pid_odom_angular_constants_set(6.5, 0.0, 52.5);    // Angular control for odom motions
   chassis.pid_odom_boomerang_constants_set(5.8, 0.0, 32.5);  // Angular control for boomerang motions
 
@@ -48,10 +48,14 @@ void drive_example() {
   // The third parameter is a boolean (true or false) for enabling/disabling a slew at the start of drive motions
   // for slew, only enable it when the drive distance is greater than the slew distance + a few inches
 
-  chassis.pid_drive_set(24_in, DRIVE_SPEED);
+  chassis.pid_drive_set(12_in, DRIVE_SPEED);
   chassis.pid_wait();
 
-  pros::delay(200);
+  chassis.pid_drive_set(12_in, DRIVE_SPEED);
+  chassis.pid_wait();
+
+
+  pros::delay(2000);
 
   chassis.pid_drive_set(-12_in, DRIVE_SPEED);
   chassis.pid_wait();
