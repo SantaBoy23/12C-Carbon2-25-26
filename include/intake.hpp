@@ -20,3 +20,5 @@ void TopIntakeMove();
 void IntakeControl();
 void IntakeLiftControl();
 void IntakeParkControl();
+
+void TestIntake();
