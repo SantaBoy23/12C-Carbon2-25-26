@@ -3,6 +3,9 @@
 const int DRIVE_SPEED = 110;
 const int TURN_SPEED = 90;
 const int SWING_SPEED = 110;
+const int INTAKE_SPEED = 127;
+
+
 
 void default_constants() {
   // P, I, D, and Start I
@@ -39,6 +42,36 @@ void default_constants() {
 
   chassis.pid_angle_behavior_set(ez::shortest);  // Defaults turning behavior to shortest path
 }
+
+
+void red_right_solo() {
+  //Sets starting position
+  chassis.odom_xyt_set(0_in, 0_in, 0_deg);
+
+
+  //Drive backwards towards match loader
+  chassis.pid_drive_set(-28_in, DRIVE_SPEED);
+  chassis.pid_wait_until(-10_in);
+  chassis.pid_wait();
+
+  //Drop match loader mech
+  MatchLoadDrop(true);
+
+  //Turn to face match loader
+  chassis.pid_turn_set(86_deg, TURN_SPEED);
+  chassis.pid_wait();
+
+  // // Start bottom intake and  reverse top intake
+  // BottomIntakeMove ();
+  // TopIntakeMove ();
+
+  // Move into match loader
+  chassis.pid_drive_set(-10.7_in, DRIVE_SPEED);
+  chassis.pid_wait();
+
+
+}
+
 ///
 // Drive Example
 ///
@@ -50,20 +83,20 @@ void drive_example() {
 
   // TopIntakeMove(IntakeSpeed);
 
-  // chassis.pid_drive_set(12_in, DRIVE_SPEED);
-  // chassis.pid_wait();
+  chassis.pid_drive_set(12_in, DRIVE_SPEED);
+  chassis.pid_wait();
 
-  // chassis.pid_drive_set(12_in, DRIVE_SPEED);
-  // chassis.pid_wait();
+  chassis.pid_drive_set(12_in, DRIVE_SPEED);
+  chassis.pid_wait();
 
 
-  // pros::delay(2000);
+  pros::delay(1000);
 
-  // chassis.pid_drive_set(-12_in, DRIVE_SPEED);
-  // chassis.pid_wait();
+  chassis.pid_drive_set(-12_in, DRIVE_SPEED);
+  chassis.pid_wait();
 
-  // chassis.pid_drive_set(-12_in, DRIVE_SPEED);
-  // chassis.pid_wait();
+  chassis.pid_drive_set(-12_in, DRIVE_SPEED);
+  chassis.pid_wait();
 }
 
 ///
@@ -243,8 +276,14 @@ void odom_drive_example() {
   // You can replace pid_drive_set with pid_odom_set and your robot will
   // have better error correction.
 
-  chassis.pid_odom_set({{0_in, 36_in, 45_deg}, fwd, 110});
+  chassis.pid_odom_set({{2_in, 2_in, 45_deg}, fwd, 110}, true);
   chassis.pid_wait();
+  
+  // chassis.pid_odom_set({{0_in, 0_in, 90_deg}, fwd, 110});
+  // chassis.pid_wait();
+
+  // chassis.pid_odom_set({{0_in, 0_in, 0_deg}, fwd, 110});
+  // chassis.pid_wait();
 
   // chassis.pid_odom_set(24_in, DRIVE_SPEED, true);
   // chassis.pid_wait();

@@ -2,6 +2,8 @@
 
 void default_constants();
 
+void red_right_solo();
+
 void drive_example();
 void turn_example();
 void drive_and_turn();
