@@ -45,29 +45,46 @@ void default_constants() {
 
 
 void red_right_solo() {
-  //Sets starting position
-  chassis.odom_xyt_set(0_in, 0_in, 0_deg);
+    //set starting angle
+  chassis.drive_angle_set(-90_deg);
 
 
   //Drive backwards towards match loader
   chassis.pid_drive_set(-28_in, DRIVE_SPEED);
   chassis.pid_wait_until(-10_in);
   chassis.pid_wait();
+  pros::delay(50);
 
   //Drop match loader mech
   MatchLoadDrop(true);
 
   //Turn to face match loader
-  chassis.pid_turn_set(86_deg, TURN_SPEED);
+  chassis.pid_turn_set(-3_deg, TURN_SPEED);
   chassis.pid_wait();
 
-  // // Start bottom intake and  reverse top intake
-  // BottomIntakeMove ();
-  // TopIntakeMove ();
+  // Start bottom intake and  reverse top intake
+  intakeTop.move(-127);
+  intakeBottom.move(127);
 
-  // Move into match loader
-  chassis.pid_drive_set(-10.7_in, DRIVE_SPEED);
+  // Move into match loader, and wait until all blocks are in intake
+  chassis.pid_drive_set(-11_in, DRIVE_SPEED);
   chassis.pid_wait();
+  pros::delay(850);
+
+  //Move sraight back into long goal, start top intake lift match load mech
+  chassis.pid_drive_set(29_in, 127);
+  chassis.pid_wait();
+  intakeTop.move(127);
+  MatchLoadDrop(false);
+  pros::delay(950);
+
+  //Pull away from long goal and turn towards three blocks. Reverse top intake
+  chassis.pid_drive_set( -12_in, DRIVE_SPEED);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_turn_set(-45_deg, TURN_SPEED);
+
+
+
 
 
 }

@@ -10,6 +10,11 @@ void TopIntakeMove(int IntakeSpeed) {
     intakeTop.move(IntakeSpeed);
 }
 
+void FullIntakeMove(int IntakeSpeed) {
+    intakeTop.move(IntakeSpeed);
+    intakeBottom.move(-IntakeSpeed);
+}
+
 // Function for intake driver control
 void IntakeControl() {
 
