@@ -6,26 +6,15 @@ ez::Drive chassis(
     17, 3.25, 450  // IMU Port, Wheel Diameter (in), Wheel RPM
 );
 
-// Uncomment the trackers you're using here!
-// - `8` and `9` are smart ports (making these negative will reverse the sensor)
-//  - you should get positive values on the encoders going FORWARD and RIGHT
-// - `2.75` is the wheel diameter
-// - `4.0` is the distance from the center of the wheel to the center of the robot
-ez::tracking_wheel horiz_tracker(9, 2, 3.23);  // This tracking wheel is perpendicular to the drive wheels 3.4
-ez::tracking_wheel vert_tracker(3, 2, 3.26);   // This tracking wheel is parallel to the drive wheels 3.2
+ez::tracking_wheel horiz_tracker(9, 2, 3.38);  // This tracking wheel is perpendicular to the drive wheels 3.4
+ez::tracking_wheel vert_tracker(3, 2.2, 2.73);   // This tracking wheel is parallel to the drive wheels 3.2
 
 void initialize() {
   ez::ez_template_print();  // Print EZ-Template branding
 
   pros::delay(500);  // Allow legacy ports to initialize
-
-  // Look at your horizontal tracking wheel and decide if it's in front of the midline of your robot or behind it
-  //  - change `back` to `front` if the tracking wheel is in front of the midline
-  //  - ignore this if you aren't using a horizontal tracker
+  
   chassis.odom_tracker_front_set(&horiz_tracker);
-  // Look at your vertical tracking wheel and decide if it's to the left or right of the center of the robot
-  //  - change `left` to `right` if the tracking wheel is to the right of the centerline
-  //  - ignore this if you aren't using a vertical tracker
   chassis.odom_tracker_right_set(&vert_tracker);
 
   chassis.opcontrol_curve_buttons_toggle(true);   // Enables modifying the controller curve with buttons on the joysticks

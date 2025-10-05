@@ -14,7 +14,7 @@ void default_constants() {
   chassis.pid_heading_constants_set(11.0, 0.0, 20.0);        // Holds the robot straight while going forward without odom
   chassis.pid_turn_constants_set(1.7, 0.0, 2.5);     // Turn in place constants
   chassis.pid_swing_constants_set(3.0, 0.0, 1.6);           // Swing constants //Needs a tad more D
-  chassis.pid_odom_angular_constants_set(6.5, 0.0, 52.5);    // Angular control for odom motions
+  chassis.pid_odom_angular_constants_set(11.5, 0.0, 57.0);
   chassis.pid_odom_boomerang_constants_set(1.0, 0.01, 11.5);  // Angular control for boomerang motions1 .01 11.5 
 
   // Exit conditions
@@ -34,7 +34,7 @@ void default_constants() {
 
   // The amount that turns are prioritized over driving in odom motions
   // - if you have tracking wheels, you can run this higher.  1.0 is the max
-  chassis.odom_turn_bias_set(0.9);
+  chassis.odom_turn_bias_set(1.0); //used to be 0.9
 
   chassis.odom_look_ahead_set(7_in);           // This is how far ahead in the path the robot looks at
   chassis.odom_boomerang_distance_set(16_in);  // This sets the maximum distance away from target that the carrot point can be
@@ -409,7 +409,7 @@ void odom_drive_example() {
   // You can replace pid_drive_set with pid_odom_set and your robot will
   // have better error correction.
 
-  chassis.pid_odom_set({{2_in, 2_in, 45_deg}, fwd, 110}, true);
+  chassis.pid_odom_set({{0_in, 24_in}, fwd, DRIVE_SPEED}, true);
   chassis.pid_wait();
   
   // chassis.pid_odom_set({{0_in, 0_in, 90_deg}, fwd, 110});
@@ -432,15 +432,18 @@ void odom_drive_example() {
 // Odom Pure Pursuit
 ///
 void odom_pure_pursuit_example() {
-  // Drive to 0, 30 and pass through 6, 10 and 0, 20 on the way, with slew
-  chassis.pid_odom_set({{0_in, 24_in}, fwd, DRIVE_SPEED},
-                        //{{0_in, 20_in}, fwd, DRIVE_SPEED},
-                        //{{0_in, 30_in}, fwd, DRIVE_SPEED}},
-                       true);
+  /*
+  
+  chassis.pid_odom_set({{0_in, 24_in}, fwd, DRIVE_SPEED});
   chassis.pid_wait();
 
-  // Drive to 0, 0 backwards
-  chassis.pid_odom_set({{24_in, 24_in}, rev, DRIVE_SPEED},
+  chassis.pid_odom_set({{24_in, 24_in}, fwd, DRIVE_SPEED});
+  chassis.pid_wait();
+  */
+
+  // Drive to 0, 30 and pass through 6, 10 and 0, 20 on the way, with slew
+  chassis.pid_odom_set({{{0_in, 24_in}, fwd, DRIVE_SPEED},
+                        {{24_in, 48_in}, fwd, DRIVE_SPEED}},
                        true);
   chassis.pid_wait();
 }
@@ -550,3 +553,6 @@ void measure_offsets() {
 // . . .
 // Make your own autonomous functions here!
 // . . .
+
+// r: 2.73 2.74 2.72 2.77 2.71 - 2.73
+// l: 3.38 3.37 3.41 3.40 3.34 - 3.38
