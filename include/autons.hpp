@@ -4,6 +4,7 @@ void default_constants();
 
 void red_right_solo();
 void red_right();
+void skills_auto();
 
 void drive_example();
 void turn_example();

@@ -14,7 +14,7 @@ void default_constants() {
   chassis.pid_heading_constants_set(11.0, 0.0, 20.0);        // Holds the robot straight while going forward without odom
   chassis.pid_turn_constants_set(1.7, 0.0, 2.5);     // Turn in place constants
   chassis.pid_swing_constants_set(3.0, 0.0, 1.6);           // Swing constants //Needs a tad more D
-  chassis.pid_odom_angular_constants_set(11.5, 0.0, 57.0);
+  chassis.pid_odom_angular_constants_set(11.5, 0.0, 68.5);
   chassis.pid_odom_boomerang_constants_set(1.0, 0.01, 11.5);  // Angular control for boomerang motions1 .01 11.5 
 
   // Exit conditions
@@ -34,7 +34,7 @@ void default_constants() {
 
   // The amount that turns are prioritized over driving in odom motions
   // - if you have tracking wheels, you can run this higher.  1.0 is the max
-  chassis.odom_turn_bias_set(1.0); //used to be 0.9
+  chassis.odom_turn_bias_set(0.97); //used to be 0.9
 
   chassis.odom_look_ahead_set(7_in);           // This is how far ahead in the path the robot looks at
   chassis.odom_boomerang_distance_set(16_in);  // This sets the maximum distance away from target that the carrot point can be
@@ -43,6 +43,52 @@ void default_constants() {
   chassis.pid_angle_behavior_set(ez::shortest);  // Defaults turning behavior to shortest path
 }
 
+void skills_auto() {
+//set starting angle
+  chassis.drive_angle_set(-90_deg);
+
+  chassis.odom_xyt_set(95_in, 14.5_in, 270_deg);
+
+  //Drive backwards towards match loader
+  chassis.pid_drive_set(-30.2_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+  pros::delay(50);
+
+  //Turn to face match loader
+  chassis.pid_turn_set(-6.5_deg, 90); //was 60 //was-6
+  chassis.pid_wait();
+  pros::delay(50);
+
+  //Set starting angle to 0
+  chassis.drive_angle_set(0_deg);
+
+  // Start bottom intake and  reverse top intake and drop match loader
+  intakeTop.move(-127);
+  intakeBottom.move(127);
+  MatchLoadDrop(true);
+
+  // Move into match loader once
+  chassis.pid_drive_set(-9.75_in, 60); //was 90
+  chassis.pid_wait_quick_chain();
+  pros::delay(75); 
+
+  //Push into loader, and wait till blocks are in intake
+  chassis.pid_drive_set(-.525_in, DRIVE_SPEED); //was -1
+  chassis.pid_wait();
+  pros::delay(100); //was 75
+  chassis.pid_drive_set(.25_in, DRIVE_SPEED);  //was .25
+  chassis.pid_wait();
+  pros::delay(0);
+
+  //Move sraight back into long goal, start top intake lift match load mech
+  chassis.pid_drive_set(29.25_in, 127);
+  chassis.pid_wait();
+  MatchLoadDrop(false);
+  chassis.pid_drive_set(1.25_in, 127); //was .75
+  chassis.pid_wait();
+  intakeTop.move(127);
+  pros::delay(1850);
+}
 
 void red_right_solo() {
   //set starting angle
@@ -73,12 +119,12 @@ void red_right_solo() {
   pros::delay(75); 
 
   //Push into loader, and wait till blocks are in intake
-  chassis.pid_drive_set(-1_in, DRIVE_SPEED);
+  chassis.pid_drive_set(-.525_in, DRIVE_SPEED); //was -1
   chassis.pid_wait();
-  pros::delay(100); 
-  chassis.pid_drive_set(.25_in, DRIVE_SPEED);  //was 1
+  pros::delay(75); //was 75
+  chassis.pid_drive_set(.25_in, DRIVE_SPEED);  //was .25
   chassis.pid_wait();
-  pros::delay(50);
+  pros::delay(0);
 
   //Move sraight back into long goal, start top intake lift match load mech
   chassis.pid_drive_set(29.25_in, 127);
@@ -94,7 +140,7 @@ void red_right_solo() {
   chassis.pid_wait();
 
   //Move to balls and reverse top intake
-  chassis.pid_drive_set(-7_in, 127);
+  chassis.pid_drive_set(-7.5_in, 127); //was-7
   chassis.pid_wait();
   intakeTop.move(-127);
 
@@ -103,20 +149,45 @@ void red_right_solo() {
   chassis.pid_wait();
 
   //Turn towards other 3 blocks
-  chassis.pid_turn_set(79_deg, TURN_SPEED);
+  chassis.pid_turn_set(75_deg, TURN_SPEED); //was 79
   chassis.pid_wait();
 
   //Move to 3 balls
-  chassis.pid_drive_set(-15.5_in, 127); //was-16
+  chassis.pid_drive_set(-15_in, 127); //was-15.5
   chassis.pid_wait();
 
   //move forward again
-  chassis.pid_drive_set(-4_in, 127);
+  chassis.pid_drive_set(-8_in, 127); //was -7
   chassis.pid_wait();
 
   //turn towards middle goal
-  chassis.pid_turn_set(225_deg, TURN_SPEED);
+  chassis.pid_turn_set(40_deg, TURN_SPEED); //was 40
   chassis.pid_wait();
+
+  //move to middle goal and deposit 2 balls
+  chassis.pid_drive_set(17_in, 127); //was 16
+  chassis.pid_wait();
+  IntakeLiftDrop(true);
+  intakeTop.move(127);
+  pros::delay(875);
+  intakeTop.move(-127);
+  IntakeLiftDrop(false);
+
+  //turn away from center goal
+  chassis.pid_turn_set(52_deg, TURN_SPEED);
+  chassis.pid_wait();
+
+  //move away from middle goal and turn towards long goal
+  chassis.pid_drive_set(-47_in, 127); //was 46
+  chassis.pid_wait();
+  chassis.pid_turn_set(0_deg, TURN_SPEED);
+  chassis.pid_wait();
+
+  //move forward to long goal and start top intake
+  chassis.pid_drive_set(10_in, 127);
+  chassis.pid_wait();
+  intakeTop.move(127);
+
 
 
   // chassis.pid_swing_set(ez::LEFT_SWING, 90_deg, SWING_SPEED, 45);
@@ -469,6 +540,11 @@ void odom_pure_pursuit_example() {
   // Drive to 0, 30 and pass through 6, 10 and 0, 20 on the way, with slew
   chassis.pid_odom_set({{{0_in, 24_in}, fwd, DRIVE_SPEED},
                         {{24_in, 48_in}, fwd, DRIVE_SPEED}},
+                       true);
+  chassis.pid_wait();
+
+  chassis.pid_odom_set({{{0_in, 24_in}, rev, DRIVE_SPEED},
+                        {{0_in, 0_in}, rev, DRIVE_SPEED}},
                        true);
   chassis.pid_wait();
 }
