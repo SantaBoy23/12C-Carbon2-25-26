@@ -2,6 +2,7 @@
 
 void default_constants();
 
+void red_left_auto();
 void red_right_solo();
 void red_right();
 void skills_auto();
