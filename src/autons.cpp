@@ -75,10 +75,10 @@ void skills_auto() {
   //Push into loader, and wait till blocks are in intake
   chassis.pid_drive_set(-.525_in, DRIVE_SPEED); //was -1
   chassis.pid_wait();
-  pros::delay(100); //was 75
-  chassis.pid_drive_set(.25_in, DRIVE_SPEED);  //was .25
+  pros::delay(50); //was 950
+  chassis.pid_drive_set(-.25_in, DRIVE_SPEED);  //was .25
   chassis.pid_wait();
-  pros::delay(0);
+  pros::delay(1000); //was 0
 
   //Move sraight back into long goal, start top intake lift match load mech
   chassis.pid_drive_set(29.25_in, 127);
@@ -87,7 +87,19 @@ void skills_auto() {
   chassis.pid_drive_set(1.25_in, 127); //was .75
   chassis.pid_wait();
   intakeTop.move(127);
-  pros::delay(1850);
+  pros::delay(1950); //was 1850
+
+  //turn
+  // chassis.pid_turn_set(50_deg, 90); //was 60 //was-6
+  // chassis.pid_wait();
+
+  chassis.pid_swing_behavior_set(ez::shortest);
+
+  //swing into four blocks and reverse top intake
+  chassis.pid_swing_set(ez::RIGHT_SWING, 135_deg, 127, -11);
+  chassis.pid_wait();
+  intakeTop.move(-127);
+
 }
 
 void red_right_solo() {

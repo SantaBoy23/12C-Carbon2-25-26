@@ -27,6 +27,7 @@ void initialize() {
   ez::as::auton_selector.autons_add({
       {"Skills Auto", skills_auto},
       {"RED Right Side Solo AWP", red_right_solo},
+      {"RED Right Side auto", red_right},
       {"Drive\n\nDrive forward and come back", drive_example},
       {"Turn\n\nTurn 3 times.", turn_example},
       {"Drive and Turn\n\nDrive forward, turn, come back", drive_and_turn},
