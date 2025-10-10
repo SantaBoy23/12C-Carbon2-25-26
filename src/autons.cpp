@@ -43,6 +43,90 @@ void default_constants() {
   chassis.pid_angle_behavior_set(ez::shortest);  // Defaults turning behavior to shortest path
 }
 
+void red_right_7_auto() {
+  //set starting angle
+  chassis.drive_angle_set(-90_deg);
+
+  chassis.odom_xyt_set(95_in, 14.5_in, 270_deg);
+
+  //Drive backwards towards match loader
+  chassis.pid_drive_set(-30.75_in, DRIVE_SPEED, true);//was -30.2 //was -30.75
+  chassis.pid_wait();
+  pros::delay(50);
+
+  //Turn to face match loader
+  chassis.pid_turn_set(-6.5_deg, 90); //was 60 //was-6 //was-6.5
+  chassis.pid_wait();
+  pros::delay(50);
+
+  //Set starting angle to 0
+  chassis.drive_angle_set(0_deg);
+
+  // Start bottom intake and  reverse top intake and drop match loader
+  intakeTop.move(-127);
+  intakeBottom.move(127);
+  MatchLoadDrop(true);
+
+  // Move into match loader once
+  chassis.pid_drive_set(-9.75_in, 60); //was 90
+  chassis.pid_wait_quick_chain();
+  pros::delay(75); 
+
+  //Push into loader, and wait till blocks are in intake
+  chassis.pid_drive_set(-.4_in, DRIVE_SPEED); //was -.525
+  chassis.pid_wait();
+  pros::delay(50); //was 950
+  chassis.pid_drive_set(-.3_in, DRIVE_SPEED);  //was -.25
+  chassis.pid_wait();
+  pros::delay(800); //was 1000 //was 850
+
+  //Move sraight back into long goal, start top intake lift match load mech
+  chassis.pid_drive_set(29.25_in, 127);
+  chassis.pid_wait();
+  MatchLoadDrop(false);
+  chassis.pid_drive_set(1.25_in, 127); //was .75
+  chassis.pid_wait();
+  intakeTop.move(127);
+  pros::delay(1800); //was 1950 //was 1850
+
+  //turn
+  // chassis.pid_turn_set(50_deg, 90); //was 60 //was-6
+  // chassis.pid_wait();
+
+  chassis.pid_swing_behavior_set(ez::shortest);
+
+  //swing into four blocks and reverse top intake
+  chassis.pid_swing_set(ez::RIGHT_SWING, 137_deg, 127, -23); //was -11 //was-20 //was -23 //was 135_deg
+  chassis.pid_wait();
+  intakeTop.move(-127);
+
+  //move into 4 blocks
+  chassis.pid_drive_set(-4.5_in, 127); //was 4
+  chassis.pid_wait();
+  MatchLoadDrop(true);
+  intakeTop.move(-127);
+  chassis.pid_drive_set(-1.5_in, 127); //was -1.5
+  chassis.pid_wait();
+
+  //turn towards long goal
+  chassis.pid_turn_set(115_deg, 90); //was 60 //was-6 //was-6.5
+  chassis.pid_wait();
+
+  //move towards long goal
+  chassis.pid_drive_set(24_in, 127); //was 22
+  chassis.pid_wait();
+
+  //turn to face long goal
+  chassis.pid_turn_set(3_deg, 90); //was 6 //was 5
+  chassis.pid_wait();
+  pros::delay(25);
+
+  //move into long goal and start top intake
+  chassis.pid_drive_set(12_in, 127); //was -1.5
+  chassis.pid_wait();
+  intakeTop.move(127);
+}
+
 void red_left_auto() {
   //set starting angle
   chassis.drive_angle_set(90_deg);
@@ -131,7 +215,7 @@ void red_left_auto() {
 }
 
 void skills_auto() {
-//set starting angle
+  //set starting angle
   chassis.drive_angle_set(-90_deg);
 
   chassis.odom_xyt_set(95_in, 14.5_in, 270_deg);
