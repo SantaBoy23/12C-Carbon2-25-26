@@ -25,6 +25,7 @@ void initialize() {
 
   // Autonomous Selector
   ez::as::auton_selector.autons_add({
+      {"Red right side elims centered block rush", elims_rush_right_red},
       {"Red right 7 block auto", red_right_7_auto},
       {"Red Left auto", red_left_auto},
       {"Skills Auto", skills_auto},

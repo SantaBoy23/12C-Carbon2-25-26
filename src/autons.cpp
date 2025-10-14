@@ -43,6 +43,45 @@ void default_constants() {
   chassis.pid_angle_behavior_set(ez::shortest);  // Defaults turning behavior to shortest path
 }
 
+void elims_rush_right_red() {
+  //set starting angle
+  chassis.drive_angle_set(180_deg); //was-142
+
+  //Start intake and drive towards 3 blocks
+  intakeTop.move(-127);
+  intakeBottom.move(127);
+  chassis.pid_drive_set(-12_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+
+  //swing to face center blocks
+  chassis.pid_swing_behavior_set(ez::shortest);
+  chassis.pid_swing_set(ez::RIGHT_SWING, -130_deg, 127, 0); //was -135_deg
+  chassis.pid_wait();
+  intakeTop.move(-127);
+
+  //drive to center blocks
+  chassis.pid_drive_set(-5_in, DRIVE_SPEED, true); //was-4
+  chassis.pid_wait();
+  pros::delay(25);
+  chassis.pid_drive_set(-25_in, DRIVE_SPEED, true); //was-29 //was-27 //was-26
+  chassis.pid_wait();
+
+  //swing to correct position to grab balls
+  chassis.pid_swing_set(ez::RIGHT_SWING, -107_deg, 127, 0); //was-110 //was-105
+  chassis.pid_wait();
+
+  //pull back while dropping match loader
+  chassis.pid_drive_set(10_in, DRIVE_SPEED, true); //was20
+  chassis.pid_wait_until(.0001);
+  MatchLoadDrop(true);
+  chassis.pid_wait();
+
+  //stop intake and swing around so facing match loader
+  chassis.pid_swing_set(ez::LEFT_SWING, 0_deg, 5, 127); 
+  chassis.pid_wait();
+
+}
+
 void red_right_7_auto() {
   //set starting angle
   chassis.drive_angle_set(-90_deg);
@@ -113,11 +152,11 @@ void red_right_7_auto() {
   chassis.pid_wait();
 
   //move towards long goal
-  chassis.pid_drive_set(24_in, 127); //was 22
+  chassis.pid_drive_set(23_in, 127); //was 22 //was 24
   chassis.pid_wait();
 
   //turn to face long goal
-  chassis.pid_turn_set(3_deg, 90); //was 6 //was 5
+  chassis.pid_turn_set(2_deg, 90); //was 6 //was 5 //was3
   chassis.pid_wait();
   pros::delay(25);
 

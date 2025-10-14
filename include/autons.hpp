@@ -2,6 +2,7 @@
 
 void default_constants();
 
+void elims_rush_right_red();
 void red_left_auto();
 void red_right_solo();
 void red_right();
