@@ -63,22 +63,36 @@ void elims_rush_right_red() {
   chassis.pid_drive_set(-5_in, DRIVE_SPEED, true); //was-4
   chassis.pid_wait();
   pros::delay(25);
-  chassis.pid_drive_set(-25_in, DRIVE_SPEED, true); //was-29 //was-27 //was-26
+  chassis.pid_drive_set(-26_in, DRIVE_SPEED, true); //was-29 //was-27 //was-26
   chassis.pid_wait();
 
   //swing to correct position to grab balls
-  chassis.pid_swing_set(ez::RIGHT_SWING, -107_deg, 127, 0); //was-110 //was-105
+  chassis.pid_swing_set(ez::RIGHT_SWING, -110_deg, 127, 0); //was-110 //was-105 //was-107
   chassis.pid_wait();
 
   //pull back while dropping match loader
-  chassis.pid_drive_set(10_in, DRIVE_SPEED, true); //was20
+  chassis.pid_drive_set(29_in, DRIVE_SPEED, true); //was10
   chassis.pid_wait_until(.0001);
   MatchLoadDrop(true);
   chassis.pid_wait();
+  // pros::delay(25);
 
   //stop intake and swing around so facing match loader
-  chassis.pid_swing_set(ez::LEFT_SWING, 0_deg, 5, 127); 
+  // chassis.pid_swing_set(ez::LEFT_SWING, -2_deg, 30, 127); 
+  // chassis.pid_wait();
+
+  //turn towards long goal
+  chassis.pid_turn_set(-60_deg, 90); //was -20
   chassis.pid_wait();
+
+  //move towards long goal
+  chassis.pid_drive_set(-36_in, DRIVE_SPEED, true); //was-29 //was-27 //was-26
+  chassis.pid_wait();
+
+  //turn to 0 to face long goal
+  chassis.pid_turn_set(-2_deg, 90);
+  chassis.pid_wait();
+
 
 }
 
