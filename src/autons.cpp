@@ -57,7 +57,6 @@ void elims_rush_right_red() {
   chassis.pid_swing_behavior_set(ez::shortest);
   chassis.pid_swing_set(ez::RIGHT_SWING, -130_deg, 127, 0); //was -135_deg
   chassis.pid_wait();
-  intakeTop.move(-127);
 
   //drive to center blocks
   chassis.pid_drive_set(-5_in, DRIVE_SPEED, true); //was-4
@@ -67,7 +66,7 @@ void elims_rush_right_red() {
   chassis.pid_wait();
 
   //swing to correct position to grab balls
-  chassis.pid_swing_set(ez::RIGHT_SWING, -110_deg, 127, 0); //was-110 //was-105 //was-107
+  chassis.pid_swing_set(ez::RIGHT_SWING, -112_deg, 127, -2); //was-110 //was-105 //was-107 //was-110 //was-111
   chassis.pid_wait();
 
   //pull back while dropping match loader
@@ -86,13 +85,38 @@ void elims_rush_right_red() {
   chassis.pid_wait();
 
   //move towards long goal
-  chassis.pid_drive_set(-36_in, DRIVE_SPEED, true); //was-29 //was-27 //was-26
+  chassis.pid_drive_set(-39_in, DRIVE_SPEED, true);//was-40
   chassis.pid_wait();
 
   //turn to 0 to face long goal
-  chassis.pid_turn_set(-2_deg, 90);
+  chassis.pid_turn_set(-4_deg, 90);
   chassis.pid_wait();
+  chassis.drive_angle_set(0_deg);
 
+  //move forward into long goal and start top intake
+  chassis.pid_drive_set(15_in, DRIVE_SPEED, true); //was-29 //was-27 //was-26
+  chassis.pid_wait();
+  intakeTop.move(127);
+  pros::delay(2500); //was 2450
+
+  //move back into match loader, reverse top intake, and wait till all are in intake
+  chassis.pid_drive_set(-4_in, DRIVE_SPEED, true);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_turn_set(-1_deg, 90);
+  chassis.pid_wait_quick_chain();
+  intakeTop.move(-127);
+  chassis.pid_drive_set(-23_in, DRIVE_SPEED, true);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_drive_set(-6_in, DRIVE_SPEED, true);
+  chassis.pid_wait_quick_chain();
+  // chassis.pid_drive_set(-1_in, DRIVE_SPEED, true);
+  // chassis.pid_wait();
+  pros::delay(400); //was450
+
+  //move back into long goal and start top intake
+  chassis.pid_drive_set(30_in, DRIVE_SPEED, true);
+  chassis.pid_wait();
+  intakeTop.move(127);
 
 }
 
