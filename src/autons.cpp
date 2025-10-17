@@ -50,7 +50,7 @@ void elims_rush_right_red() {
   //Start intake and drive towards 3 blocks
   intakeTop.move(-127);
   intakeBottom.move(127);
-  chassis.pid_drive_set(-12_in, DRIVE_SPEED, true);
+  chassis.pid_drive_set(-12_in, 127, true);
   chassis.pid_wait();
 
   //swing to face center blocks
@@ -59,10 +59,10 @@ void elims_rush_right_red() {
   chassis.pid_wait();
 
   //drive to center blocks
-  chassis.pid_drive_set(-5_in, DRIVE_SPEED, true); //was-4
-  chassis.pid_wait();
-  pros::delay(25);
-  chassis.pid_drive_set(-26_in, DRIVE_SPEED, true); //was-29 //was-27 //was-26
+  chassis.pid_drive_set(-5_in, 127, true); //was-4
+  chassis.pid_wait_quick_chain();
+  // pros::delay(25);
+  chassis.pid_drive_set(-26_in, 127, true); //was-29 //was-27 //was-26
   chassis.pid_wait();
 
   //swing to correct position to grab balls
@@ -70,51 +70,44 @@ void elims_rush_right_red() {
   chassis.pid_wait();
 
   //pull back while dropping match loader
-  chassis.pid_drive_set(29_in, DRIVE_SPEED, true); //was10
+  chassis.pid_drive_set(10_in, DRIVE_SPEED, true); //was29
   chassis.pid_wait_until(.0001);
   MatchLoadDrop(true);
   chassis.pid_wait();
   // pros::delay(25);
 
-  //stop intake and swing around so facing match loader
-  // chassis.pid_swing_set(ez::LEFT_SWING, -2_deg, 30, 127); 
-  // chassis.pid_wait();
-
-  //turn towards long goal
-  chassis.pid_turn_set(-60_deg, 90); //was -20
+  //swing around so facing match loader
+  chassis.pid_swing_behavior_set(ez::longest);
+  chassis.pid_swing_set(ez::RIGHT_SWING, 3_deg, 127, 40); //was -135_deg //was39
   chassis.pid_wait();
 
-  //move towards long goal
-  chassis.pid_drive_set(-39_in, DRIVE_SPEED, true);//was-40
-  chassis.pid_wait();
-
-  //turn to 0 to face long goal
-  chassis.pid_turn_set(-4_deg, 90);
-  chassis.pid_wait();
-  chassis.drive_angle_set(0_deg);
+  // //turn to 0 to face long goal
+  // chassis.pid_turn_set(-4_deg, 90);
+  // chassis.pid_wait_quick_chain();
+  // chassis.drive_angle_set(0_deg);
 
   //move forward into long goal and start top intake
-  chassis.pid_drive_set(15_in, DRIVE_SPEED, true); //was-29 //was-27 //was-26
+  chassis.pid_drive_set(25_in, 127, true); //was-29 //was-27 //was-26
   chassis.pid_wait();
   intakeTop.move(127);
-  pros::delay(2500); //was 2450
+  pros::delay(2550); //was 2450
 
   //move back into match loader, reverse top intake, and wait till all are in intake
-  chassis.pid_drive_set(-4_in, DRIVE_SPEED, true);
+  chassis.pid_drive_set(-23_in, 127, true);
   chassis.pid_wait_quick_chain();
-  chassis.pid_turn_set(-1_deg, 90);
-  chassis.pid_wait_quick_chain();
+  // chassis.pid_turn_set(1_deg, 90); //was-1 //was 0
+  // chassis.pid_wait_quick_chain();
   intakeTop.move(-127);
-  chassis.pid_drive_set(-23_in, DRIVE_SPEED, true);
+  chassis.pid_drive_set(-4_in, 127, true);
   chassis.pid_wait_quick_chain();
-  chassis.pid_drive_set(-6_in, DRIVE_SPEED, true);
+  chassis.pid_drive_set(-5.5_in, 127, true); //was-6 //was -5.75
   chassis.pid_wait_quick_chain();
   // chassis.pid_drive_set(-1_in, DRIVE_SPEED, true);
   // chassis.pid_wait();
-  pros::delay(400); //was450
+  pros::delay(50); //was300
 
   //move back into long goal and start top intake
-  chassis.pid_drive_set(30_in, DRIVE_SPEED, true);
+  chassis.pid_drive_set(31_in, 127, true);
   chassis.pid_wait();
   intakeTop.move(127);
 
