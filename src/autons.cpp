@@ -319,7 +319,7 @@ void skills_auto() {
   pros::delay(50); //was 950
   chassis.pid_drive_set(-.45_in, DRIVE_SPEED);  //was -.25 //was-.4
   chassis.pid_wait();
-  pros::delay(800);
+  pros::delay(1300); //was800 //was1200
 
   //Move sraight back into long goal, start top intake lift match load mech
   chassis.pid_drive_set(29.25_in, 127);
@@ -332,7 +332,7 @@ void skills_auto() {
   pros::delay(100);
   intakeBottom.move(127);
   MatchLoadDrop(false);
-  pros::delay(2200);
+  pros::delay(2600); //was2300
 
   // turn
   // chassis.pid_turn_set(50_deg, 90); //was 60 //was-6
@@ -374,47 +374,132 @@ void skills_auto() {
   //turn towards match loader
   chassis.pid_turn_set(235_deg, 90);
   chassis.pid_wait();
+  intakeBottom.move(0);
 
   //move towards match loader
-  chassis.pid_drive_set(-30_in, 127); //was-29
+  chassis.pid_drive_set(-29_in, 127); //was-29 //was-30
   chassis.pid_wait();
 
   //turn towards long goal
   chassis.pid_turn_set(180_deg, 90);
   chassis.pid_wait();
 
-  //move into goal and deposit blocks
+
+  //drop match loader move into goal and deposit blocks
   chassis.pid_drive_set(19_in, 127);
   chassis.pid_wait();
-  intakeTop.move(127);
-  chassis.drive_angle_set(180_deg);
-  pros::delay(1800);
-
-  //drop match loader, move back into match loader, reverse top intake, and wait till all are in intake
   MatchLoadDrop(true);
+  intakeBottom.move(-127);
+  intakeTop.move(127);
+  pros::delay(100);
+  intakeBottom.move(127);
+  chassis.drive_angle_set(180_deg);
+  pros::delay(2200);//was1800
+
+  //move back into match loader, reverse top intake, and wait till all are in intake
   chassis.pid_drive_set(-4_in, 127, true);
   chassis.pid_wait_quick_chain();
-  chassis.pid_turn_set(179_deg, 90); //was178
-  chassis.pid_wait_quick_chain();
+  // chassis.pid_turn_set(179_deg, 90); //was178
+  // chassis.pid_wait_quick_chain();
   intakeTop.move(-127);
   chassis.pid_drive_set(-23_in, 127, true);
   chassis.pid_wait_quick_chain();
   chassis.pid_drive_set(-5.75_in, 127, true);//was -5.5 //was-3.5 //was-5.5
   chassis.pid_wait();
-  pros::delay(1000);
+  pros::delay(1900);
 
-  // //pull away from match loader
-  // chassis.pid_drive_set(15_in, 127);
-  // chassis.pid_wait();
+  //pull away from match loader
+  chassis.pid_drive_set(15_in, 127); 
+  chassis.pid_wait();
 
-  // //turn towards other side of field
-  // chassis.pid_turn_set(266_deg, 90);
-  // chassis.pid_wait();
+  //turn towards other side of field
+  chassis.pid_turn_set(90_deg, 90); //was266 //was86
+  chassis.pid_wait();
 
   //move to other side of the field
-  // chassis.pid_drive_set(85_in, 127);
-  // chassis.pid_wait();
+  chassis.pid_drive_set(-96_in, 127); //was94 //was-94
+  chassis.pid_wait();
 
+  //turn to face long goal
+  chassis.pid_turn_set(180_deg, 90);
+  chassis.pid_wait();
+
+  //push into long goal and empty balls
+  chassis.pid_drive_set(19_in, 127); //was9 //was13 //was15
+  chassis.pid_wait();
+  intakeBottom.move(-127);
+  intakeTop.move(127);
+  pros::delay(150);
+  intakeBottom.move(127);
+  chassis.drive_angle_set(180_deg);
+  pros::delay(2350); //was2200
+
+  //drive straight back into match loader and intake all blocks straight out
+  chassis.pid_drive_set(-4_in, 127, true);
+  chassis.pid_wait_quick_chain();
+  // chassis.pid_turn_set(179_deg, 90); //was178
+  // chassis.pid_wait_quick_chain();
+  intakeTop.move(-127);
+  chassis.pid_drive_set(-23_in, 127, true);
+  chassis.pid_wait_quick_chain();
+  chassis.pid_drive_set(-5.75_in, 127, true);//was -5.5 //was-3.5 //was-5.5
+  chassis.pid_wait();
+  pros::delay(1700);
+
+  //pull out of match loader and go straight back into long goal and empty all balls, lift match loader
+  chassis.pid_drive_set(32_in, 127, true);
+  chassis.pid_wait();
+  intakeTop.move(127);
+  chassis.drive_angle_set(180_deg);
+  pros::delay(2350); //was2200
+  MatchLoadDrop(false);
+  intakeTop.move(-127);
+
+  //move away from long goal
+  chassis.pid_drive_set(-15_in, 127, true);
+  chassis.pid_wait();
+
+  //turn towards center area
+  chassis.pid_turn_set(-55_deg, 90);
+  chassis.pid_wait();
+
+  //move toards center
+  chassis.pid_drive_set(-26_in, 127, true);//was-27
+  chassis.pid_wait();
+
+  //turn to face red side
+  chassis.pid_turn_set(-1_deg, 90);
+  chassis.pid_wait();
+
+  //move to red side
+  chassis.pid_drive_set(-42_in, 127);
+  chassis.pid_wait();
+  chassis.pid_drive_set(-13_in, 127);
+  chassis.pid_wait();
+
+  //turn towards match loader
+  chassis.pid_turn_set(55_deg, 90);
+  chassis.pid_wait();
+  intakeBottom.move(0);
+
+  //move towards match loader
+  chassis.pid_drive_set(-16_in, 127); //was-29 //was-30
+  chassis.pid_wait();
+
+  //turn towards long goal
+  chassis.pid_turn_set(0_deg, 90);
+  chassis.pid_wait();
+
+  //drop match loader move into goal and deposit blocks
+  chassis.pid_drive_set(19_in, 127);
+  chassis.pid_wait();
+  MatchLoadDrop(true);
+  intakeBottom.move(-127);
+  intakeTop.move(127);
+  pros::delay(100);
+  intakeBottom.move(127);
+  chassis.drive_angle_set(180_deg);
+  pros::delay(2200);//was1800
 }
 
 void red_right_solo() {
