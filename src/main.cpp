@@ -25,12 +25,15 @@ void initialize() {
 
   // Autonomous Selector
   ez::as::auton_selector.autons_add({
-      {"Skills Auto", skills_auto},
+      {"Blue right side elims centered block rush", elims_rush_right_blue},
       {"Red right side elims centered block rush", elims_rush_right_red},
       {"Red right 7 block auto", red_right_7_auto},
+      {"Blue right 7 block auto", blue_right_7_auto},
       {"Red Left auto", red_left_auto},
       {"RED Right Side Solo AWP", red_right_solo},
       {"RED Right Side auto", red_right},
+      {"BLUE Right Side auto", blue_right},
+      {"Skills Auto", skills_auto},
       {"Drive\n\nDrive forward and come back", drive_example},
       {"Turn\n\nTurn 3 times.", turn_example},
       {"Drive and Turn\n\nDrive forward, turn, come back", drive_and_turn},

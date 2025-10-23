@@ -3,11 +3,15 @@
 void default_constants();
 
 void elims_rush_right_red();
+void elims_rush_right_blue();
 void red_left_auto();
 void red_right_solo();
 void red_right();
-void skills_auto();
+void blue_right();
 void red_right_7_auto();
+void blue_right_7_auto();
+void skills_auto();
+
 
 void drive_example();
 void turn_example();
