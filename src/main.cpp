@@ -1,31 +1,106 @@
 #include "main.h"
 
+// =======================
+// DEVICE DEFINITIONS
+// =======================
+
+pros::Controller master(pros::E_CONTROLLER_MASTER);
+
+// Subsystem ports
+pros::Motor topIntake(3);
+pros::Motor trainRight1(11);
+pros::Motor trainRight2(12);
+pros::Motor trainRight3(13);
+pros::Motor trainLeft1(14);
+pros::Motor trainLeft2(15);
+pros::Motor trainLeft3(16);
+pros::Motor bottomIntake(21);
+
+// =======================
+// CHASSIS SETUP
+// =======================
+
 ez::Drive chassis(
     {-14, -15, -16},    // Left Chassis Ports
-    {11, 12, 13}, // Right Chassis Ports
-    17, 3.25, 450  // IMU Port, Wheel Diameter (in), Wheel RPM
+    {11, 12, 13},       // Right Chassis Ports
+    17, 3.25, 450       // IMU Port, Wheel Diameter (in), Wheel RPM
 );
 
-ez::tracking_wheel horiz_tracker(9, 2, 3.38);  // This tracking wheel is perpendicular to the drive wheels 3.4
-ez::tracking_wheel vert_tracker(3, 2.2, 2.73);   // This tracking wheel is parallel to the drive wheels 3.2
+ez::tracking_wheel horiz_tracker(9, 2, 3.38);  // Perpendicular tracker
+ez::tracking_wheel vert_tracker(3, 2.2, 2.73); // Parallel tracker
 
+// =======================
+// CONNECTION CHECK FUNCTION
+// =======================
+bool checkConnections() {
+  bool allGood = true;
+
+  // --- Clear LCD ---
+  for (int i = 0; i < 8; i++) pros::lcd::clear_line(i);
+  pros::lcd::print(0, "Running device diagnostics...");
+
+  // --- Motor Checks ---
+  std::vector<pros::Motor*> motors = {
+      &topIntake, &trainRight1, &trainRight2, &trainRight3,
+      &trainLeft1, &trainLeft2, &trainLeft3, &bottomIntake
+  };
+
+  int line = 1;
+  for (auto m : motors) {
+    if (!m->is_installed()) {
+      std::cout << "⚠️ Motor missing on port " << m->get_port() << std::endl;
+      pros::lcd::print(line++, "⚠ Motor %d missing!", m->get_port());
+      allGood = false;
+      pros::delay(500);
+    }
+  }
+
+  // --- Results ---
+  if (allGood) {
+    std::cout << "✅ All devices connected!" << std::endl;
+    for (int i = 0; i < 8; i++) pros::lcd::clear_line(i);
+    pros::lcd::print(0, "✅ All devices OK!");
+  } else {
+    pros::lcd::print(line + 1, "❌ Check wiring before run!");
+  }
+
+  return allGood;
+}
+
+
+
+// =======================
+// INITIALIZE
+// =======================
 void initialize() {
-  ez::ez_template_print();  // Print EZ-Template branding
+  ez::ez_template_print();
+  pros::delay(500);
 
-  pros::delay(500);  // Allow legacy ports to initialize
-  
+  pros::lcd::initialize();  // Required for screen output
+  for (int i = 0; i < 8; i++) pros::lcd::clear_line(i);
+  pros::lcd::print(0, "Checking devices...");
+  std::cout << "Running device diagnostics..." << std::endl;
+
+  bool good = checkConnections();
+  if (!good) {
+    std::cout << "❌ Connection check failed! Halting init." << std::endl;
+    pros::lcd::print(1, "❌ Connection check failed!");
+    pros::lcd::print(2, "Fix wires & reboot.");
+    while (true) {  // Stop robot until reboot
+      pros::delay(100);
+    }
+  }
+
+  // --- Continue with EZ-Template setup ---
   chassis.odom_tracker_front_set(&horiz_tracker);
   chassis.odom_tracker_right_set(&vert_tracker);
+  chassis.opcontrol_curve_buttons_toggle(true);
+  chassis.opcontrol_drive_activebrake_set(0.0);
+  // chassis.opcontrol_curve_default_set(0.0, 0.0);
+  default_constants();
 
-  chassis.opcontrol_curve_buttons_toggle(true);   // Enables modifying the controller curve with buttons on the joysticks
-  chassis.opcontrol_drive_activebrake_set(0.0);   // Sets the active brake kP. We recommend ~2.  0 will disable.
-  //chassis.opcontrol_curve_default_set(0.0, 0.0);  // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)
-
-  default_constants();  // Set the drivetrain constants from autons.cpp
-
-  // Autonomous Selector
+  // --- KEEPING YOUR AUTON SELECTOR EXACTLY AS IS ---
   ez::as::auton_selector.autons_add({
-      
       {"Red right side elims centered block rush", elims_rush_right_red},
       {"Blue right side elims centered block rush", elims_rush_right_blue},
       {"Red right 7 block auto", red_right_7_auto},
@@ -51,123 +126,92 @@ void initialize() {
       {"Measure Offsets\n\nThis will turn the robot a bunch of times and calculate your offsets for your tracking wheels.", measure_offsets},
   });
 
-  // Initialize chassis and auton selector
   chassis.initialize();
   ez::as::initialize();
-  //ColorSensorLight(100);
-  master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
+
+  pros::lcd::print(3, "IMU Calibrated: %s", chassis.drive_imu_calibrated() ? "Yes" : "No");
 }
 
 
-void disabled() {
-}
+// =======================
+// THE REST OF THE CODE
+// =======================
 
-void competition_initialize() {
-}
+void disabled() {}
+void competition_initialize() {}
 
 void autonomous() {
-  chassis.pid_targets_reset();                // Resets PID targets to 0
-  chassis.drive_imu_reset();                  // Reset gyro position to 0
-  chassis.drive_sensor_reset();               // Reset drive sensors to 0
-  chassis.odom_xyt_set(0_in, 0_in, 0_deg);    // Set the current position, you can start at a specific position with this
-  chassis.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold.  This helps autonomous consistency
-
-  ez::as::auton_selector.selected_auton_call();  // Calls selected auton from autonomous selector
+  chassis.pid_targets_reset();
+  chassis.drive_imu_reset();
+  chassis.drive_sensor_reset();
+  chassis.odom_xyt_set(0_in, 0_in, 0_deg);
+  chassis.drive_brake_set(MOTOR_BRAKE_HOLD);
+  ez::as::auton_selector.selected_auton_call();
 }
 
-//Simplifies printing tracker values to the brain screen
 void screen_print_tracker(ez::tracking_wheel *tracker, std::string name, int line) {
   std::string tracker_value = "", tracker_width = "";
-  // Check if the tracker exists
   if (tracker != nullptr) {
-    tracker_value = name + " tracker: " + util::to_string_with_precision(tracker->get());             // Make text for the tracker value
-    tracker_width = "  width: " + util::to_string_with_precision(tracker->distance_to_center_get());  // Make text for the distance to center
+    tracker_value = name + " tracker: " + util::to_string_with_precision(tracker->get());
+    tracker_width = "  width: " + util::to_string_with_precision(tracker->distance_to_center_get());
   }
-  ez::screen_print(tracker_value + tracker_width, line);  // Print final tracker text
+  ez::screen_print(tracker_value + tracker_width, line);
 }
 
-// EZ-Template screen task
 void ez_screen_task() {
   while (true) {
-    // Only runs this when not connected to a comp switch
     if (!pros::competition::is_connected()) {
-      // Blank page for odom debugging
       if (chassis.odom_enabled() && !chassis.pid_tuner_enabled()) {
-        // If we're on the first blank page...
         if (ez::as::page_blank_is_on(0)) {
-          // Display X, Y, and Theta
           ez::screen_print("x: " + util::to_string_with_precision(chassis.odom_x_get()) +
                                "\ny: " + util::to_string_with_precision(chassis.odom_y_get()) +
-                               "\na: " + util::to_string_with_precision(chassis.odom_theta_get()),
-                           1);  // Don't override the top Page line
-
-          // Display all trackers that are being used
+                               "\na: " + util::to_string_with_precision(chassis.odom_theta_get()), 1);
           screen_print_tracker(chassis.odom_tracker_left, "l", 4);
           screen_print_tracker(chassis.odom_tracker_right, "r", 5);
           screen_print_tracker(chassis.odom_tracker_back, "b", 6);
           screen_print_tracker(chassis.odom_tracker_front, "f", 7);
         }
       }
-    }
-
-    // Remove all blank pages when connected to a comp switch
-    else {
+    } else {
       if (ez::as::page_blank_amount() > 0)
         ez::as::page_blank_remove_all();
     }
-
     pros::delay(ez::util::DELAY_TIME);
   }
 }
 
-pros::Task ezScreenTask(ez_screen_task);  // Run EZ-Template screen task
-
+pros::Task ezScreenTask(ez_screen_task);
 
 void ez_template_extras() {
-  // Only runs this when not connected to a competition switch
   if (!pros::competition::is_connected()) {
-
-    // Enable / Disable PID Tuner
-    // When enabled:
-    //  * use A and Y to increment / decrement the constants
-    //  * use the arrow keys to navigate the constants
     if (master.get_digital_new_press(DIGITAL_X))
-      chassis.pid_tuner_toggle();
-      chassis.pid_tuner_full_enable(true);
+      chassis.pid_tuner_toggle(), chassis.pid_tuner_full_enable(true);
 
-    // Trigger the selected autonomous routine using B and DOWN
     if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN)) {
       pros::motor_brake_mode_e_t preference = chassis.drive_brake_get();
       autonomous();
       chassis.drive_brake_set(preference);
     }
 
-    // Allow PID Tuner to iterate
     chassis.pid_tuner_iterate();
-  }
-
-  // Disable PID Tuner when connected to a comp switch
-  else {
-    if (chassis.pid_tuner_enabled())
-      chassis.pid_tuner_disable();
+  } else if (chassis.pid_tuner_enabled()) {
+    chassis.pid_tuner_disable();
   }
 }
 
-// Driver Control
 void opcontrol() {
-  chassis.drive_brake_set(MOTOR_BRAKE_COAST); // Switch motor brakes to coast
+  chassis.drive_brake_set(MOTOR_BRAKE_COAST);
 
   while (true) {
-    ez_template_extras(); // Built in EZ-Template extras
-    chassis.opcontrol_tank();  // Activate tank control
+    ez_template_extras();
+    chassis.opcontrol_tank();
     IntakeControl();
     CenterDescoreControl();
     IntakeLiftControl();
     MatchLoadControl();
     AntennaControl();
     IntakeParkControl();
-    //ColorSortKill();
 
-    pros::delay(ez::util::DELAY_TIME);  // Slight delay at end of each loop
+    pros::delay(ez::util::DELAY_TIME);
   }
 }
