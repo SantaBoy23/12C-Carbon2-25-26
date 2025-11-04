@@ -1,4 +1,5 @@
 #include "main.h"
+#include "liblvgl/lvgl.h"
 
 // =======================
 // DEVICE DEFINITIONS
@@ -68,6 +69,38 @@ bool checkConnections() {
 }
 
 
+// =======================
+// LVGL IMAGE DISPLAY + ROTATION
+// =======================
+
+extern lv_img_dsc_t screen_logo;
+
+// LV_IMG_DECLARE(screen_logo); // Replace with your image variable name
+
+void rotate_logo_task(void *param) {
+  lv_obj_t *img = (lv_obj_t *)param;
+  int angle = 0;
+
+  while (true) {
+    lv_img_set_angle(img, angle * 10); // LVGL uses 0.1 degree units
+    angle = (angle + 2) % 360; // smooth spin
+    pros::delay(50);
+  }
+}
+
+void setup_rotating_logo() {
+  // Create the image on the screen
+  lv_obj_t* img = lv_img_create(lv_scr_act());
+  lv_img_set_src(img, &screen_logo); // your LVGL image symbol
+  lv_obj_align(img, LV_ALIGN_CENTER, 0, 0);
+
+  // optional: set rotation pivot to image center
+  //lv_img_set_pivot(img, 64, 64); // adjust based on image size
+
+  // Start rotation task
+  //pros::Task rotateTask(rotate_logo_task, img);
+}
+
 
 // =======================
 // INITIALIZE
@@ -99,7 +132,7 @@ void initialize() {
   // chassis.opcontrol_curve_default_set(0.0, 0.0);
   default_constants();
 
-  // --- KEEPING YOUR AUTON SELECTOR EXACTLY AS IS ---
+  // --- AUTON SELECTOR ---
   ez::as::auton_selector.autons_add({
       {"Red right side elims centered block rush", elims_rush_right_red},
       {"Blue right side elims centered block rush", elims_rush_right_blue},
@@ -129,7 +162,13 @@ void initialize() {
   chassis.initialize();
   ez::as::initialize();
 
+  // ✅ Display and rotate logo
+  setup_rotating_logo();
+
   pros::lcd::print(3, "IMU Calibrated: %s", chassis.drive_imu_calibrated() ? "Yes" : "No");
+
+  master.rumble(chassis.drive_imu_calibrated() ? "." : "---");
+  
 }
 
 
