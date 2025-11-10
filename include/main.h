@@ -82,8 +82,6 @@ void initialize(void);
 void disabled(void);
 void competition_initialize(void);
 void opcontrol(void);
-bool checkConnections(bool);
-bool allGood(bool);
 #ifdef __cplusplus
 }
 #endif
