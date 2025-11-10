@@ -72,13 +72,26 @@ void elims_rush_right_red() {
   //pull back while dropping match loader
   chassis.pid_drive_set(10_in, DRIVE_SPEED, true); //was29
   chassis.pid_wait_until(.0001);
-  MatchLoadDrop(true);
+  // MatchLoadDrop(true);
   chassis.pid_wait();
   // pros::delay(25);
 
-  //swing around so facing goal
+  // //swing around so facing goal
+  // chassis.pid_swing_behavior_set(ez::longest);
+  // chassis.pid_swing_set(ez::RIGHT_SWING, 3_deg, 127, 40); //was -135_deg //was39
+  // chassis.pid_wait();
+
+  //turn towards long goal
+  chassis.pid_turn_set(192_deg, 90); //was-1 //was 0
+  chassis.pid_wait_quick_chain();
+
+  //move a bit towards long goal
+  chassis.pid_drive_set(8_in, DRIVE_SPEED, true); //was29
+  chassis.pid_wait();
+
+  //swing to 0 to face long goal
   chassis.pid_swing_behavior_set(ez::longest);
-  chassis.pid_swing_set(ez::RIGHT_SWING, 3_deg, 127, 40); //was -135_deg //was39
+  chassis.pid_swing_set(ez::RIGHT_SWING, 3_deg, 127, 0); //was -135_deg //was39
   chassis.pid_wait();
 
   // //turn to 0 to face long goal
@@ -87,37 +100,40 @@ void elims_rush_right_red() {
   // chassis.drive_angle_set(0_deg);
 
   //move forward into long goal and start top intake
-  chassis.pid_drive_set(26_in, 127, true); //was-29 //was-27 //was-26 //was25
+  chassis.pid_drive_set(6_in, 127, true); //was-29 //was-27 //was-26 //was25 //was26
   chassis.pid_wait();
   intakeTop.move(127);
   intakeBottom.move(-127);
   pros::delay(50); //was 2450
   intakeBottom.move(127);
-  pros::delay(2450); //was 2450 //was2550 //was2500
+  pros::delay(2500); //was 2450 //was2550 //was2500 //was2450
 
-  //move back into match loader, reverse top intake, and wait till all are in intake
-  chassis.pid_drive_set(-12_in, 127, true); //was-23
-  chassis.pid_wait_quick_chain();
-  chassis.pid_turn_set(-1_deg, 90); //was-1 //was 0
-  chassis.pid_wait_quick_chain();
+  //move back into match loader, reverse top intake, drop match loader, and wait till all are in intake
+  MatchLoadDrop(true);
   intakeTop.move(-127);
-  chassis.pid_drive_set(-15_in, 127, true);
+  chassis.pid_drive_set(-27_in, 127, true); //was-29 //was-28
   chassis.pid_wait_quick_chain();
+  chassis.pid_drive_set(-2.5_in, 20, true); //was //was-2 //was30 speed //was-3 //was-2.5
+  chassis.pid_wait_quick_chain();
+
+
+  // chassis.pid_drive_set(-12_in, 127, true); //was-23
+  // chassis.pid_wait_quick_chain();
+  // chassis.pid_turn_set(-1_deg, 90); //was-1 //was 0
+  // chassis.pid_wait_quick_chain();
+  // intakeTop.move(-127);
+  // chassis.pid_drive_set(-15_in, 127, true);
+  // chassis.pid_wait_quick_chain();
   // chassis.pid_drive_set(-7.5_in, 127, true); //was-6 //was -5.75 //was-5.5 //was-5.75 //was-6 //was-7
   // chassis.pid_wait_quick_chain();
   // chassis.pid_drive_set(-1_in, DRIVE_SPEED, true);
   // chassis.pid_wait();
-  pros::delay(550); //was300
+  // pros::delay(50); //was300
 
   //move back into long goal and start top intake
-  chassis.pid_drive_set(13_in, 127, true);
-  chassis.pid_wait_quick_chain();
-  chassis.pid_turn_set(2_deg, 90); //was-1 //was 0
-  chassis.pid_wait_quick_chain();
-  chassis.pid_drive_set(20_in, 127, true);
+  chassis.pid_drive_set(30_in, 127, true);
   chassis.pid_wait_quick_chain();
   intakeTop.move(127);
-
 }
 
 void elims_rush_right_blue() {
