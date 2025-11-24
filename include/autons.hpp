@@ -2,6 +2,9 @@
 
 void default_constants();
 
+inline ez::Piston parkLeft('E');
+void OdomPodDrop(bool OdomPodState);
+
 void elims_rush_right_red();
 void elims_rush_right_blue();
 void red_left_auto();

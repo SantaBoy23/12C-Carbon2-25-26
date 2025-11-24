@@ -6,8 +6,8 @@ ez::Drive chassis(
     17, 3.25, 450  // IMU Port, Wheel Diameter (in), Wheel RPM
 );
 
-ez::tracking_wheel horiz_tracker(9, 2, 3.38);  // This tracking wheel is perpendicular to the drive wheels 3.4
-ez::tracking_wheel vert_tracker(3, 2.2, 2.73);   // This tracking wheel is parallel to the drive wheels 3.2
+ez::tracking_wheel horiz_tracker(9, 2, 3.18);  // This tracking wheel is perpendicular to the drive wheels 3.4
+// ez::tracking_wheel vert_tracker(3, 2.2, 2.73);   // This tracking wheel is parallel to the drive wheels 3.2
 
 void initialize() {
   ez::ez_template_print();  // Print EZ-Template branding
@@ -15,7 +15,7 @@ void initialize() {
   pros::delay(500);  // Allow legacy ports to initialize
   
   chassis.odom_tracker_front_set(&horiz_tracker);
-  chassis.odom_tracker_right_set(&vert_tracker);
+  // chassis.odom_tracker_right_set(&vert_tracker);
 
   chassis.opcontrol_curve_buttons_toggle(true);   // Enables modifying the controller curve with buttons on the joysticks
   chassis.opcontrol_drive_activebrake_set(0.0);   // Sets the active brake kP. We recommend ~2.  0 will disable.
@@ -25,7 +25,6 @@ void initialize() {
 
   // Autonomous Selector
   ez::as::auton_selector.autons_add({
-      
       {"Red right side elims centered block rush", elims_rush_right_red},
       {"RED Right Side Solo AWP", red_right_solo},
       {"Red Left auto", red_left_auto},

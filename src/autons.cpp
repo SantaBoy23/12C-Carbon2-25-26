@@ -5,7 +5,10 @@ const int TURN_SPEED = 90;
 const int SWING_SPEED = 110;
 const int INTAKE_SPEED = 127;
 
-
+void OdomPodDrop() {
+    //If "B" button is pressed, toggle intake drop state
+    intakeLift.button_toggle(master.get_digital(DIGITAL_LEFT));
+}
 
 void default_constants() {
   // P, I, D, and Start I
@@ -14,8 +17,8 @@ void default_constants() {
   chassis.pid_heading_constants_set(11.0, 0.0, 20.0);        // Holds the robot straight while going forward without odom
   chassis.pid_turn_constants_set(1.7, 0.0, 2.5);     // Turn in place constants
   chassis.pid_swing_constants_set(3.0, 0.0, 1.6);           // Swing constants //Needs a tad more D
-  chassis.pid_odom_angular_constants_set(11.5, 0.0, 68.5);
-  chassis.pid_odom_boomerang_constants_set(1.0, 0.01, 11.5);  // Angular control for boomerang motions1 .01 11.5 
+  chassis.pid_odom_angular_constants_set(8, 0.0, 55); //was11.5, 0.0, 68.5
+  chassis.pid_odom_boomerang_constants_set(6, 0.0, 120);  // Angular control for boomerang motions//was1.0, 0.01, 11.5
 
   // Exit conditions
   chassis.pid_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
@@ -34,7 +37,7 @@ void default_constants() {
 
   // The amount that turns are prioritized over driving in odom motions
   // - if you have tracking wheels, you can run this higher.  1.0 is the max
-  chassis.odom_turn_bias_set(0.97); //used to be 0.9
+  chassis.odom_turn_bias_set(0.9); //used to be 0.9 //was.97
 
   chassis.odom_look_ahead_set(7_in);           // This is how far ahead in the path the robot looks at
   chassis.odom_boomerang_distance_set(16_in);  // This sets the maximum distance away from target that the carrot point can be
@@ -46,28 +49,39 @@ void default_constants() {
 void elims_rush_right_red() {
   //set starting angle
   chassis.drive_angle_set(180_deg); //was-142
+  chassis.odom_xyt_set(84_in, 26_in, 180_deg);
 
-  //Start intake and drive towards 3 blocks
   intakeTop.move(-127);
   intakeBottom.move(127);
-  chassis.pid_drive_set(-12_in, 127, true);
+
+  chassis.pid_odom_set({{94_in, 44_in,  225_deg}, rev, DRIVE_SPEED}, true);
   chassis.pid_wait();
 
-  //swing to face center blocks
-  chassis.pid_swing_behavior_set(ez::shortest);
-  chassis.pid_swing_set(ez::RIGHT_SWING, -130_deg, 127, 0); //was -135_deg
-  chassis.pid_wait();
+  // chassis.pid_odom_set({{114_in, 62_in}, rev, DRIVE_SPEED}, true);
+  // chassis.pid_wait();
+
+  // //Start intake and drive towards 3 blocks
+  // intakeTop.move(-127);
+  // intakeBottom.move(127);
+  // chassis.pid_drive_set(-12_in, 127, true);
+  // chassis.pid_wait();
+
+  // //swing to face center blocks
+  // chassis.pid_swing_behavior_set(ez::shortest);
+  // chassis.pid_swing_set(ez::RIGHT_SWING, -130_deg, 127, 0); //was -135_deg
+  // chassis.pid_wait();
 
   //drive to center blocks
-  chassis.pid_drive_set(-5_in, 127, true); //was-4
-  chassis.pid_wait_quick_chain();
+  // chassis.pid_drive_set(-5_in, 127, true); //was-4
+  // chassis.pid_wait_quick_chain();
   // pros::delay(25);
-  chassis.pid_drive_set(-26_in, 127, true); //was-29 //was-27 //was-26
+  chassis.pid_drive_set(-25_in, 127, true); //was-29 //was-27 //was-26
   chassis.pid_wait();
 
   //swing to correct position to grab balls
   chassis.pid_swing_set(ez::RIGHT_SWING, -112_deg, 127, -2); //was-110 //was-105 //was-107 //was-110 //was-111
   chassis.pid_wait();
+
 
   // pull back //while dropping match loader
   chassis.pid_drive_set(10_in, DRIVE_SPEED, true); //was29
@@ -1274,19 +1288,19 @@ void drive_example() {
 
   // TopIntakeMove(IntakeSpeed);
 
-  chassis.pid_drive_set(15_in, DRIVE_SPEED);
+  chassis.pid_drive_set(15_in, DRIVE_SPEED, true);
   chassis.pid_wait();
 
-  chassis.pid_drive_set(15_in, DRIVE_SPEED);
+  chassis.pid_drive_set(15_in, DRIVE_SPEED, true);
   chassis.pid_wait();
 
 
   pros::delay(1000);
 
-  chassis.pid_drive_set(-15_in, DRIVE_SPEED);
+  chassis.pid_drive_set(-15_in, DRIVE_SPEED, true);
   chassis.pid_wait();
 
-  chassis.pid_drive_set(-15_in, DRIVE_SPEED);
+  chassis.pid_drive_set(-15_in, DRIVE_SPEED, true);
   chassis.pid_wait();
 }
 
@@ -1490,25 +1504,23 @@ void odom_drive_example() {
 // Odom Pure Pursuit
 ///
 void odom_pure_pursuit_example() {
-  /*
-  
+
   chassis.pid_odom_set({{0_in, 24_in}, fwd, DRIVE_SPEED});
   chassis.pid_wait();
 
   chassis.pid_odom_set({{24_in, 24_in}, fwd, DRIVE_SPEED});
   chassis.pid_wait();
-  */
 
-  // Drive to 0, 30 and pass through 6, 10 and 0, 20 on the way, with slew
-  chassis.pid_odom_set({{{0_in, 24_in}, fwd, DRIVE_SPEED},
-                        {{24_in, 48_in}, fwd, DRIVE_SPEED}},
-                       true);
-  chassis.pid_wait();
+  // // Drive to 0, 30 and pass through 6, 10 and 0, 20 on the way, with slew
+  // chassis.pid_odom_set({{{0_in, 24_in}, fwd, DRIVE_SPEED},
+  //                       {{24_in, 48_in}, fwd, DRIVE_SPEED}},
+  //                      true);
+  // chassis.pid_wait();
 
-  chassis.pid_odom_set({{{0_in, 24_in}, rev, DRIVE_SPEED},
-                        {{0_in, 0_in}, rev, DRIVE_SPEED}},
-                       true);
-  chassis.pid_wait();
+  // chassis.pid_odom_set({{{0_in, 24_in}, rev, DRIVE_SPEED},
+  //                       {{0_in, 0_in}, rev, DRIVE_SPEED}},
+  //                      true);
+  // chassis.pid_wait();
 }
 
 ///
@@ -1542,15 +1554,16 @@ void odom_boomerang_example() {
 // Odom Boomerang Injected Pure Pursuit
 ///
 void odom_boomerang_injected_pure_pursuit_example() {
+  chassis.odom_xyt_set(0_in, 0_in, 0_deg);
   chassis.pid_odom_set({{{0_in, 24_in, 45_deg}, fwd, DRIVE_SPEED},
-                        {{12_in, 24_in}, fwd, DRIVE_SPEED},
-                        {{24_in, 24_in}, fwd, DRIVE_SPEED}},
+                        // {{12_in, 24_in}, fwd, DRIVE_SPEED},
+                        {{24_in, 24_in, 45_deg}, fwd, DRIVE_SPEED}},
                        true);
   chassis.pid_wait();
 
-  chassis.pid_odom_set({{0_in, 0_in, 0_deg}, rev, DRIVE_SPEED},
-                       true);
-  chassis.pid_wait();
+  // chassis.pid_odom_set({{0_in, 0_in, 0_deg}, rev, DRIVE_SPEED},
+  //                      true);
+  // chassis.pid_wait();
 }
 
 ///
