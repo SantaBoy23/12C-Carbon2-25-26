@@ -46,9 +46,6 @@ void IntakeControl() {
 //Parallel function to change Intake Lift status
 void IntakeLiftDrop(bool IntakeLiftState) {
     intakeLift.set(IntakeLiftState);
-    if (master.get_digital(DIGITAL_B)){
-        //intakeLiftTracker += 1;
-    }
 }
 
 void IntakeLiftControl() {
@@ -57,7 +54,7 @@ void IntakeLiftControl() {
 }
 
 void IntakeParkControl() {
-    //If "Left" button is pressed, toggle park drop state
-    parkLeft.button_toggle(master.get_digital(DIGITAL_LEFT));
-    parkRight.button_toggle(master.get_digital(DIGITAL_LEFT));
+    // //If "Left" button is pressed, toggle park drop state
+    // parkLeft.button_toggle(master.get_digital(DIGITAL_LEFT));
+    // parkRight.button_toggle(master.get_digital(DIGITAL_LEFT));
 }

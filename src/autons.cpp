@@ -5,9 +5,13 @@ const int TURN_SPEED = 90;
 const int SWING_SPEED = 110;
 const int INTAKE_SPEED = 127;
 
-void OdomPodDrop() {
-    //If "B" button is pressed, toggle intake drop state
+void OdomPodControl() {
+    //If "LEFT" button is pressed, toggle odom pod state
     intakeLift.button_toggle(master.get_digital(DIGITAL_LEFT));
+}
+
+void OdomPodLift(bool OdomPodState) {
+    odomPod.set(OdomPodState);
 }
 
 void default_constants() {
@@ -18,7 +22,7 @@ void default_constants() {
   chassis.pid_turn_constants_set(1.7, 0.0, 2.5);     // Turn in place constants
   chassis.pid_swing_constants_set(3.0, 0.0, 1.6);           // Swing constants //Needs a tad more D
   chassis.pid_odom_angular_constants_set(8, 0.0, 55); //was11.5, 0.0, 68.5
-  chassis.pid_odom_boomerang_constants_set(6, 0.0, 120);  // Angular control for boomerang motions//was1.0, 0.01, 11.5
+  chassis.pid_odom_boomerang_constants_set(1, 0.2, 41);  // Angular control for boomerang motions//was1.0, 0.01, 11.5
 
   // Exit conditions
   chassis.pid_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
@@ -37,7 +41,7 @@ void default_constants() {
 
   // The amount that turns are prioritized over driving in odom motions
   // - if you have tracking wheels, you can run this higher.  1.0 is the max
-  chassis.odom_turn_bias_set(0.9); //used to be 0.9 //was.97
+  chassis.odom_turn_bias_set(0.95); //used to be 0.9 //was.97
 
   chassis.odom_look_ahead_set(7_in);           // This is how far ahead in the path the robot looks at
   chassis.odom_boomerang_distance_set(16_in);  // This sets the maximum distance away from target that the carrot point can be
@@ -46,14 +50,109 @@ void default_constants() {
   chassis.pid_angle_behavior_set(ez::shortest);  // Defaults turning behavior to shortest path
 }
 
+void elims_left_auto() {
+  //set starting angle
+  chassis.drive_angle_set(180_deg);
+  chassis.odom_xyt_set(60_in, 26_in, 180_deg);
+
+  //start intake
+  intakeTop.move(-127);
+  intakeBottom.move(127);
+
+  //move to three centered blocks
+  chassis.pid_odom_set({{48_in, 48_in, 145_deg}, rev, 75}, true); //was90 speed //was80 speed //was150_deg
+  chassis.pid_wait_quick_chain();
+
+  //turn so top intake faces middle goal
+  chassis.pid_turn_set(45_deg, TURN_SPEED); //was-1 //was 0
+  chassis.pid_wait_quick_chain();
+
+  //move to center goal and empty all blocks
+  chassis.pid_odom_set({{63_in, 61_in, 46_deg}, fwd, 127}, true);
+  chassis.pid_wait();
+  IntakeLiftDrop(true);
+  intakeTop.move(127);
+  intakeBottom.move(127);
+  pros::delay(1300);
+
+  //move back towards match loader
+  IntakeLiftDrop(false);
+  intakeTop.move(-127);
+  intakeBottom.move(127);
+  chassis.pid_odom_set({{27_in, 24_in}, rev, 127}, true); //was25,24
+  chassis.pid_wait();
+
+  //turn to face match loader
+  chassis.pid_turn_set(1_deg, TURN_SPEED); //was-1 //was 0
+  chassis.pid_wait_quick_chain();
+  MatchLoadDrop(true);
+
+  //move into match loader and collect 3 blocks
+  chassis.pid_odom_set({{26.5_in, 7_in}, rev, 127}, true); //was27,7
+  chassis.pid_wait();
+  // pros::delay(25);
+
+  //move forward into long goal and empty all blocks
+  chassis.pid_odom_set({{26.5_in, 43_in}, fwd, 127}, true);
+  chassis.pid_wait_until({26.5_in, 32_in});
+  intakeTop.move(127);
+  intakeBottom.move(127);
+  chassis.pid_wait();
+  chassis.drive_angle_set(0_deg);
+  pros::delay(1100);
+  MatchLoadDrop(false);
+
+  //pull out of long goal
+  chassis.pid_odom_set({{26.5_in, 33_in}, rev, 127}, true);
+  chassis.pid_wait_quick_chain();
+  
+  //turn towards wall
+  chassis.pid_turn_set(268_deg, TURN_SPEED); //was-1 //was 0
+  chassis.pid_wait_quick_chain();
+
+  //move towards wall
+  chassis.pid_odom_set({{20.5_in, 33_in}, fwd, 127}, true);
+  chassis.pid_wait_quick_chain();
+
+  //turn so antenna is in goal
+  chassis.pid_turn_set(-3_deg, TURN_SPEED); //was-1 //was 0
+  chassis.pid_wait_quick_chain();
+
+  //push antenna to end of open area
+  chassis.pid_odom_set({{20.5_in, 62_in}, fwd, 127}, true);
+  chassis.pid_wait();
+
+  //Lift Odom Pod
+  OdomPodLift(true);
+
+}
+
+void right_antenna_auto() {
+  //set starting angle
+  chassis.drive_angle_set(180_deg); //was-142
+  chassis.odom_xyt_set(84_in, 26_in, 180_deg);
+
+  //start intake
+  intakeTop.move(-127);
+  intakeBottom.move(127);
+
+  //move to three centered blocks
+  chassis.pid_odom_set({{94_in, 44_in,  225_deg}, rev, DRIVE_SPEED}, true);
+  chassis.pid_wait();
+
+  
+}
+
 void elims_rush_right_red() {
   //set starting angle
   chassis.drive_angle_set(180_deg); //was-142
   chassis.odom_xyt_set(84_in, 26_in, 180_deg);
 
+  //start intake
   intakeTop.move(-127);
   intakeBottom.move(127);
 
+  //move to three centered blocks
   chassis.pid_odom_set({{94_in, 44_in,  225_deg}, rev, DRIVE_SPEED}, true);
   chassis.pid_wait();
 
@@ -1561,9 +1660,9 @@ void odom_boomerang_injected_pure_pursuit_example() {
                        true);
   chassis.pid_wait();
 
-  // chassis.pid_odom_set({{0_in, 0_in, 0_deg}, rev, DRIVE_SPEED},
-  //                      true);
-  // chassis.pid_wait();
+  chassis.pid_odom_set({{0_in, 0_in, 0_deg}, rev, DRIVE_SPEED},
+                       true);
+  chassis.pid_wait();
 }
 
 ///

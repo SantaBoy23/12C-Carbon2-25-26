@@ -25,10 +25,16 @@ void initialize() {
 
   // Autonomous Selector
   ez::as::auton_selector.autons_add({
-      {"Red right side elims centered block rush", elims_rush_right_red},
-      {"RED Right Side Solo AWP", red_right_solo},
-      {"Red Left auto", red_left_auto},
+      {"Elims Auto for LEFT Side (4 + 3 + antenna)", elims_left_auto},
+
+      {"Elims center block rush RIGHT side auto (9)", elims_rush_right_red},
+      {"Normal LEFT auto (4 + 3)", red_left_auto},
+      {"Elims Auto for LEFT Side (4 + 3 + antenna)", elims_left_auto},
+      {"Antenna push auto for RIGHT side (7 + antenna)", right_antenna_auto},
+
       {"Skills Auto", skills_auto},
+
+      {"RED Right Side Solo AWP (3 + 1 + 3)", red_right_solo},
       
       {"Blue right side elims centered block rush", elims_rush_right_blue},
       {"Red right 7 block auto", red_right_7_auto},
@@ -166,6 +172,7 @@ void opcontrol() {
     MatchLoadControl();
     AntennaControl();
     IntakeParkControl();
+    OdomPodControl();
     //ColorSortKill();
 
     pros::delay(ez::util::DELAY_TIME);  // Slight delay at end of each loop
