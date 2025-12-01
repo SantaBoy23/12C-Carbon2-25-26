@@ -25,14 +25,16 @@ void initialize() {
 
   // Autonomous Selector
   ez::as::auton_selector.autons_add({
-      {"Elims Auto for LEFT Side (4 + 3 + antenna)", elims_left_auto},
+      {"NEW ODOM Skills Auto", new_skills_auto},
 
       {"Elims center block rush RIGHT side auto (9)", elims_rush_right_red},
       {"Normal LEFT auto (4 + 3)", red_left_auto},
-      {"Elims Auto for LEFT Side (4 + 3 + antenna)", elims_left_auto},
+      {"Middle Goal Antenna Auto for LEFT Side (4 + 3 + antenna)", elims_left_auto},
       {"Antenna push auto for RIGHT side (7 + antenna)", right_antenna_auto},
+      {"Antenna push auto for LEFT side (7 + antenna)", left_antenna_auto},
 
-      {"Skills Auto", skills_auto},
+      {"ORIGINAL Skills Auto", skills_auto},
+      {"NEW ODOM Skills Auto", new_skills_auto},
 
       {"RED Right Side Solo AWP (3 + 1 + 3)", red_right_solo},
       

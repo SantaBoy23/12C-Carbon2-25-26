@@ -9,6 +9,7 @@ void OdomPodControl();
 
 void elims_left_auto();
 void right_antenna_auto();
+void left_antenna_auto();
 void elims_rush_right_red();
 void elims_rush_right_blue();
 void red_left_auto();
@@ -18,6 +19,7 @@ void blue_right();
 void red_right_7_auto();
 void blue_right_7_auto();
 void skills_auto();
+void new_skills_auto();
 
 
 void drive_example();
