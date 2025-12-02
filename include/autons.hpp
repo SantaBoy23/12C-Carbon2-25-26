@@ -7,6 +7,7 @@ void OdomPodLift(bool OdomPodState);
 
 void OdomPodControl();
 
+void sig_solo_awp ();
 void elims_left_auto();
 void right_antenna_auto();
 void left_antenna_auto();
