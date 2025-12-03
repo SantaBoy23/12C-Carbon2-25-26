@@ -71,7 +71,7 @@ void sig_solo_awp (){
   MatchLoadDrop(true);
 
   //move into match loader and collect 3 blocks
-  chassis.pid_odom_set({{116_in, 11_in}, rev, 127}, true);
+  chassis.pid_odom_set({{115.5_in, 11_in}, rev, 127}, true);
   chassis.pid_wait_quick_chain();
   pros::delay(5);
 
@@ -80,7 +80,7 @@ void sig_solo_awp (){
   chassis.pid_wait_until(19_in);
   intakeTop.move(127);
   chassis.pid_wait();
-  pros::delay(100);
+  pros::delay(50);
 
   //pull back from long goal
   MatchLoadDrop(false);
@@ -95,7 +95,7 @@ void sig_solo_awp (){
   //go over towards center goal and pick up blocks along the way
   // chassis.pid_odom_set({{96_in, 48_in, 120_deg}, rev, 127}, true);
   // chassis.pid_wait();
-  chassis.pid_odom_set({{47_in, 45.25_in}, rev, 127}, true);
+  chassis.pid_odom_set({{47_in, 46_in}, rev, 127}, true);
   chassis.pid_wait();
 
   //turn top of intake towards center goal
@@ -108,7 +108,7 @@ void sig_solo_awp (){
   IntakeLiftDrop(true);
   intakeTop.move(127);
   chassis.pid_wait();
-  pros::delay(100);
+  pros::delay(5);
 
   //move back towards match loader
   IntakeLiftDrop(false);
@@ -157,9 +157,9 @@ void new_skills_auto() {
   MatchLoadDrop(true);
 
   //move into match loader and collect all blocks
-  chassis.pid_odom_set({{118_in, 11_in}, rev, 127}, true);
+  chassis.pid_odom_set({{118_in, 13.5_in}, rev, 127}, true);
   chassis.pid_wait();
-  pros::delay(900);
+  pros::delay(1000);
 
   //pull out, lift loader, and turn towards wall
   chassis.pid_odom_set({{118_in, 24_in}, fwd, 127}, true);
@@ -171,7 +171,7 @@ void new_skills_auto() {
   //move towards wall and stop intake
   intakeTop.move(0);
   intakeBottom.move(0);
-  chassis.pid_odom_set({{132_in, 24_in}, fwd, 127}, true);
+  chassis.pid_odom_set({{131_in, 24_in}, fwd, 127}, true);
   chassis.pid_wait();
 
   //turn to face other side
@@ -179,7 +179,7 @@ void new_skills_auto() {
   chassis.pid_wait();
 
   //move to other side of field
-  chassis.pid_odom_set({{132_in, 110_in}, fwd, 127}, true);
+  chassis.pid_odom_set({{131_in, 110_in}, fwd, 127}, true);
   chassis.pid_wait();
 
   //turn away from wall
@@ -187,7 +187,7 @@ void new_skills_auto() {
   chassis.pid_wait();
 
   //move away from wall
-  chassis.pid_odom_set({{120_in, 110_in}, fwd, 127}, true);
+  chassis.pid_odom_set({{119_in, 110_in}, fwd, 127}, true);
   chassis.pid_wait();
 
   //turn to face match loader
@@ -195,7 +195,7 @@ void new_skills_auto() {
   chassis.pid_wait();
 
   //move into long goal, start top intake, and wait till are blocks are in
-  chassis.pid_odom_set({{120_in, 98_in}, fwd, 127}, true);
+  chassis.pid_odom_set({{119_in, 98_in}, fwd, 127}, true);
   chassis.pid_wait();
   intakeTop.move(127);
   intakeBottom.move(127);
@@ -204,30 +204,30 @@ void new_skills_auto() {
   //drop match loader and move back into loader
   MatchLoadDrop(true);
   intakeTop.move(-127);
-  chassis.pid_odom_set({{120_in, 133_in}, rev, 127}, true);
+  chassis.pid_odom_set({{119_in, 132.5_in}, rev, 127}, true);
   chassis.pid_wait_until(28_in);
   chassis.pid_speed_max_set(90);
   chassis.pid_wait();
   pros::delay(800);
 
   //move back into long goal
-  chassis.pid_odom_set({{120_in, 98_in}, fwd, 127}, true);
+  chassis.pid_odom_set({{119_in, 98_in}, fwd, 127}, true);
   chassis.pid_wait();
   intakeTop.move(127);
   chassis.drive_angle_set(180_deg);
-  chassis.odom_xyt_set(120_in, 98_in, 180_deg);
+  chassis.odom_xyt_set(119_in, 98_in, 180_deg);
   pros::delay(2100);
   MatchLoadDrop(false);
 
   //pull back from long goal and turn to face left side
   intakeTop.move(-127);
-  chassis.pid_odom_set({{120_in, 110_in}, rev, 127}, true);
+  chassis.pid_odom_set({{119_in, 110_in}, rev, 127}, true);
   chassis.pid_wait();
   chassis.pid_turn_set(90_deg, TURN_SPEED);
   chassis.pid_wait();
 
   //move to left side
-  chassis.pid_odom_set({{26_in, 110_in}, rev, 127}, true);
+  chassis.pid_odom_set({{26.5_in, 110_in}, rev, 127}, true); //was25.5
   chassis.pid_wait();
 
   //turn to face match loader
@@ -238,7 +238,7 @@ void new_skills_auto() {
   MatchLoadDrop(true);
   chassis.pid_odom_set({{25.5_in, 133_in}, rev, 127}, true);
   chassis.pid_wait();
-  pros::delay(850);
+  pros::delay(950);
 
   //pull out of match loader and lift match load mech
   chassis.pid_odom_set({{25.5_in, 122_in}, fwd, 127}, true);
@@ -268,7 +268,7 @@ void new_skills_auto() {
   chassis.pid_wait();
 
   //move towards center
-  chassis.pid_odom_set({{25_in, 32_in}, fwd, 127}, true);
+  chassis.pid_odom_set({{26_in, 32_in}, fwd, 127}, true);
   chassis.pid_wait();
 
   //turn towards long goal
@@ -276,7 +276,7 @@ void new_skills_auto() {
   chassis.pid_wait();
 
   //move into long goal and deposit all blocks
-  chassis.pid_odom_set({{26_in, 44_in}, fwd, 127}, true);
+  chassis.pid_odom_set({{26_in, 47_in}, fwd, 127}, true);
   chassis.pid_wait();
   intakeBottom.move(127);
   intakeTop.move(127);
@@ -290,7 +290,7 @@ void new_skills_auto() {
   pros::delay(800);
 
   //move straight into long goal and deposit all blocks
-  chassis.pid_odom_set({{26_in, 43_in}, fwd, 127}, true);
+  chassis.pid_odom_set({{26_in, 46_in}, fwd, 127}, true);
   chassis.pid_wait();
   intakeTop.move(127);
   pros::delay(2100);
@@ -298,7 +298,7 @@ void new_skills_auto() {
 
 
   //pull out of long goal and move towards park zone
-  chassis.pid_odom_set({{52_in, 13_in, 310_deg}, rev, 110}, true);
+  chassis.pid_odom_set({{52_in, 13_in, 315_deg}, rev, 110}, true);
   chassis.pid_wait();
 
   // chassis.pid_odom_set({{62_in, 13_in}, rev, 127}, true);
@@ -306,8 +306,8 @@ void new_skills_auto() {
 
   //lift odom pod then move into park zone
   OdomPodLift(true);
-  chassis.pid_drive_set(-38_in, 127, true); //was-4
-  chassis.pid_wait_quick_chain();
+  chassis.pid_drive_set(-42_in, 127, true); //was-4
+  chassis.pid_wait();
 }
 
 void left_antenna_auto() {
@@ -470,7 +470,7 @@ void right_antenna_auto() {
   chassis.pid_wait_quick_chain();
 
   //Move towards match loader
-  chassis.pid_odom_set({{116_in, 24_in}, rev, 127}, true); //was25,24
+  chassis.pid_odom_set({{115_in, 24_in}, rev, 127}, true); //was25,24
   chassis.pid_wait_quick_chain();
 
   //turn to face match loader
@@ -479,22 +479,22 @@ void right_antenna_auto() {
   MatchLoadDrop(true);
 
   //move into match loader and collect 3 blocks
-  chassis.pid_odom_set({{117_in, 7_in}, rev, 127}, true); //was27,7
+  chassis.pid_odom_set({{116_in, 9_in}, rev, 127}, true); //was27,7
   chassis.pid_wait();
   // pros::delay(25);
 
   //move forward into long goal and empty all blocks
-  chassis.pid_odom_set({{117_in, 43_in}, fwd, 127}, true);
-  chassis.pid_wait_until({117_in, 32_in});
+  chassis.pid_odom_set({{116_in, 43_in}, fwd, 127}, true);
+  chassis.pid_wait_until({116_in, 32_in});
   intakeTop.move(127);
   intakeBottom.move(127);
   chassis.pid_wait();
   // chassis.drive_angle_set(0_deg);
-  pros::delay(1300);
+  pros::delay(1200);
   MatchLoadDrop(false);
 
   //pull out of long goal
-  chassis.pid_odom_set({{117_in, 32_in}, rev, 127}, true);
+  chassis.pid_odom_set({{116_in, 32_in}, rev, 127}, true);
   chassis.pid_wait();
   
   //turn away from wall
@@ -502,7 +502,7 @@ void right_antenna_auto() {
   chassis.pid_wait_quick_chain();
 
   //move away from wall
-  chassis.pid_odom_set({{109_in, 32_in}, fwd, 127}, true);
+  chassis.pid_odom_set({{107.5_in, 32_in}, fwd, 127}, true);
   chassis.pid_wait_quick_chain();
 
   //turn so antenna is in goal
@@ -510,7 +510,7 @@ void right_antenna_auto() {
   chassis.pid_wait_quick_chain();
 
   //push antenna to end of open area
-  chassis.pid_odom_set({{109_in, 62_in}, fwd, 127}, true);
+  chassis.pid_odom_set({{107.5_in, 62_in}, fwd, 127}, true);
   chassis.pid_wait();
 
   //Lift Odom Pod

@@ -32,12 +32,12 @@ void initialize() {
       {"Antenna push auto for RIGHT side (7 + antenna)", right_antenna_auto},
       {"Antenna push auto for LEFT side (7 + antenna)", left_antenna_auto},
       {"Sig SOLO AWP (4 + 3 + 4)", sig_solo_awp},
+
+      {"NEW ODOM Skills Auto", new_skills_auto},
+      {"ORIGINAL Skills Auto", skills_auto},
+      
       {"Elims center block rush RIGHT side auto (9)", elims_rush_right_red},
       {"Normal LEFT auto (4 + 3)", red_left_auto},
-
-      {"ORIGINAL Skills Auto", skills_auto},
-      {"NEW ODOM Skills Auto", new_skills_auto},
-
       {"RED Right Side Solo AWP (3 + 1 + 3)", red_right_solo},
       
       {"Blue right side elims centered block rush", elims_rush_right_blue},
