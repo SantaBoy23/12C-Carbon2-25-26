@@ -25,16 +25,17 @@ void initialize() {
 
   // Autonomous Selector
   ez::as::auton_selector.autons_add({
-      {"Sig SOLO AWP (4 + 3 + 4)", sig_solo_awp},
 
 
       {"Middle Goal Antenna Auto for LEFT Side (4 + 3 + antenna)", elims_left_auto},
       {"Antenna push auto for RIGHT side (7 + antenna)", right_antenna_auto},
       {"Antenna push auto for LEFT side (7 + antenna)", left_antenna_auto},
-      {"Sig SOLO AWP (4 + 3 + 4)", sig_solo_awp},
+
 
       {"NEW ODOM Skills Auto", new_skills_auto},
       {"ORIGINAL Skills Auto", skills_auto},
+
+      {"Sig SOLO AWP (4 + 3 + 4)", sig_solo_awp},
       
       {"Elims center block rush RIGHT side auto (9)", elims_rush_right_red},
       {"Normal LEFT auto (4 + 3)", red_left_auto},
@@ -166,6 +167,9 @@ void ez_template_extras() {
 // Driver Control
 void opcontrol() {
   chassis.drive_brake_set(MOTOR_BRAKE_COAST); // Switch motor brakes to coast
+
+  AntennaRaise(true);
+  OdomPodLift(true);
 
   while (true) {
     ez_template_extras(); // Built in EZ-Template extras
