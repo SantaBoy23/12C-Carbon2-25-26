@@ -168,8 +168,8 @@ void ez_template_extras() {
 void opcontrol() {
   chassis.drive_brake_set(MOTOR_BRAKE_COAST); // Switch motor brakes to coast
 
-  AntennaRaise(true);
-  OdomPodLift(true);
+  // AntennaRaise(true);
+  // OdomPodLift(true);
 
   while (true) {
     ez_template_extras(); // Built in EZ-Template extras
