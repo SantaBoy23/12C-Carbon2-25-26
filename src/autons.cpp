@@ -387,6 +387,10 @@ void left_antenna_auto() {
 
   //Lift Odom Pod
   OdomPodLift(true);
+
+  //wait then lift antenna
+  pros::delay(1700);
+  AntennaRaise(true);
 }
 
 void elims_left_auto() {
@@ -410,15 +414,15 @@ void elims_left_auto() {
   chassis.pid_odom_set({{64_in, 62_in, 45_deg}, fwd, 127}, true); //was63,61,46
   chassis.pid_wait_until(12_in);
   IntakeLiftDrop(true);
-  intakeTop.move(127);
+  intakeTop.move(0);
   chassis.pid_wait();
-  pros::delay(300);
+  pros::delay(200);
 
   //move back towards match loader
   IntakeLiftDrop(false);
   intakeTop.move(-127);
   intakeBottom.move(127);
-  chassis.pid_odom_set({{26_in, 24_in}, rev, 127}, true); //was25,24
+  chassis.pid_odom_set({{26.5_in, 24_in}, rev, 127}, true); //was25,24
   chassis.pid_wait();
 
   //turn to face match loader
@@ -427,13 +431,13 @@ void elims_left_auto() {
   MatchLoadDrop(true);
 
   //move into match loader and collect 3 blocks
-  chassis.pid_odom_set({{25.5_in, 7_in}, rev, 127}, true); //was27,7
+  chassis.pid_odom_set({{26_in, 7_in}, rev, 127}, true); //was27,7
   chassis.pid_wait();
   // pros::delay(25);
 
   //move forward into long goal and empty all blocks
-  chassis.pid_odom_set({{25.5_in, 43_in}, fwd, 127}, true);
-  chassis.pid_wait_until({25.5_in, 32_in});
+  chassis.pid_odom_set({{26.5_in, 43_in}, fwd, 127}, true);
+  chassis.pid_wait_until({26.5_in, 32_in});
   intakeTop.move(127);
   intakeBottom.move(127);
   chassis.pid_wait();
@@ -444,7 +448,7 @@ void elims_left_auto() {
   intakeBottom.move(0);
 
   //pull out of long goal
-  chassis.pid_odom_set({{25.5_in, 33_in}, rev, 127}, true);
+  chassis.pid_odom_set({{26.5_in, 37_in}, rev, 127}, true);
   chassis.pid_wait_quick_chain();
   
   //turn towards wall
@@ -452,7 +456,7 @@ void elims_left_auto() {
   chassis.pid_wait_quick_chain();
 
   //move towards wall
-  chassis.pid_odom_set({{17_in, 33_in}, fwd, 127}, true);
+  chassis.pid_odom_set({{21.5_in, 37_in}, fwd, 127}, true);
   chassis.pid_wait_quick_chain();
 
   //turn so antenna is in goal
@@ -460,11 +464,15 @@ void elims_left_auto() {
   chassis.pid_wait_quick_chain();
 
   //push antenna to end of open area
-  chassis.pid_odom_set({{17_in, 62_in}, fwd, 127}, true);
+  chassis.pid_odom_set({{21.5_in, 62_in}, fwd, 127}, true);
   chassis.pid_wait();
 
   //Lift Odom Pod
   OdomPodLift(true);
+
+  //wait then lift antenna
+  pros::delay(1000);
+  AntennaRaise(true);
 
 }
 
@@ -518,7 +526,7 @@ void right_antenna_auto() {
   chassis.pid_wait_quick_chain();
 
   //move away from wall
-  chassis.pid_odom_set({{109_in, 32_in}, fwd, 127}, true);
+  chassis.pid_odom_set({{110.5_in, 32_in}, fwd, 127}, true);
   chassis.pid_wait_quick_chain();
 
   //turn so antenna is in goal
@@ -526,11 +534,15 @@ void right_antenna_auto() {
   chassis.pid_wait_quick_chain();
 
   //push antenna to end of open area
-  chassis.pid_odom_set({{109_in, 62_in}, fwd, 127}, true);
+  chassis.pid_odom_set({{110.5_in, 62_in}, fwd, 127}, true);
   chassis.pid_wait();
 
   //Lift Odom Pod
   OdomPodLift(true);
+
+  //wait then lift antenna
+  pros::delay(1700);
+  AntennaRaise(true);
 
 }
 

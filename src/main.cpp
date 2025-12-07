@@ -135,6 +135,7 @@ pros::Task ezScreenTask(ez_screen_task);  // Run EZ-Template screen task
 
 
 void ez_template_extras() {
+  
   // Only runs this when not connected to a competition switch
   if (!pros::competition::is_connected()) {
 
