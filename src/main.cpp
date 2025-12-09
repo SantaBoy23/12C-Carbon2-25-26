@@ -25,7 +25,7 @@ void initialize() {
 
   // Autonomous Selector
   ez::as::auton_selector.autons_add({
-
+      {"Random testing", random_testing},
 
       {"Middle Goal Antenna Auto for LEFT Side (4 + 3 + antenna)", elims_left_auto},
       {"Antenna push auto for RIGHT side (7 + antenna)", right_antenna_auto},

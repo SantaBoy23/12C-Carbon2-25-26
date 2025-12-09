@@ -3,9 +3,12 @@
 void default_constants();
 
 inline ez::Piston odomPod('E');
+
 void OdomPodLift(bool OdomPodState);
 
 void OdomPodControl();
+
+void random_testing ();
 
 void sig_solo_awp ();
 void elims_left_auto();

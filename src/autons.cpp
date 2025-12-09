@@ -52,6 +52,23 @@ void default_constants() {
   chassis.pid_angle_behavior_set(ez::shortest);  // Defaults turning behavior to shortest path
 }
 
+void random_testing (){
+  // chassis.pid_odom_injected_pp_set({{{0_in, 24_in}, fwd, 110},
+  //                                   {{24_in, 24_in}, fwd, 110}}, 
+  //                                   true);
+  // chassis.pid_wait();
+  
+  // chassis.pid_odom_smooth_pp_set({{{0_in, 24_in}, fwd, 110},
+  //                                 {{24_in, 24_in}, fwd, 110}},
+  //                                 true);
+  // chassis.pid_wait();
+
+  // chassis.pid_turn_set({12_in, 12_in}, fwd, 110, true);
+  // chassis.pid_wait();
+}
+
+
+
 void sig_solo_awp (){
   //set starting angle
   chassis.drive_angle_set(270_deg);

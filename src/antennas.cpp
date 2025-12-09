@@ -7,5 +7,5 @@ void AntennaRaise(bool AntennaState) {
 
 void AntennaControl() {
     //If Right Arrow is pressed, toggle Antenna state
-    Antenna.button_toggle(master.get_digital(DIGITAL_RIGHT));
+    Antenna.button_toggle(master.get_digital(DIGITAL_B));
 }
